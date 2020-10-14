@@ -1,0 +1,125 @@
+/** =======================
+ * Contenedor Principal
+ ===========================*/
+ul {
+  list-style-type: none;
+}
+
+/*h1 {
+  color: #FFF;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  margin-top: 80px;
+}
+
+h1 a {
+  color: #c12c42;
+  font-size: 16px;
+}*/
+.accordion {
+  width: 100%;
+  max-width: 480px;
+  margin: 0px auto;
+  background: #424242;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.accordion .link {
+  cursor: pointer;
+  display: block;
+  padding: 15px 15px 15px 12px;
+  /*color: #4D4D4D;*/
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  border-bottom: 1px solid #424242;
+  position: relative;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.link2 {
+  cursor: pointer;
+  display: block;
+  padding: 15px 15px 15px 12px;
+  /*color: #4D4D4D;*/
+  color: white;
+  font-size: 14px;
+  font-weight: 300;
+  border-bottom: 1px solid white;
+  position: relative;
+  /*-webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;*/
+}
+
+.accordion div:hover {
+  background: #585858;
+}
+
+/*.accordion li:last-child .link { border-bottom: 0px solid white;}*/
+/*icono caret*/
+.accordion li i {
+  position: absolute;
+  top: 16px;
+  left: 8px;
+  font-size: 18px;
+  color: white;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.accordion li i.fa-chevron-down {
+  right: 12px;
+  left: auto;
+  font-size: 12px;
+}
+
+.accordion li.open .link {
+  color: white;
+}
+
+.accordion li.open i {
+  color: white;
+}
+
+.accordion li.open i.fa-chevron-down {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/**
+ * Submenu -----------------------------*/
+.submenu {
+  display: none;
+  background: #848484;
+  font-size: 14px;
+}
+
+.submenu li {
+  border-bottom: 0px solid white;
+}
+
+.submenu a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  padding: 12px;
+  padding-left: 15px;
+  -webkit-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+  font-weight: 300;
+}
+
+.submenu a:hover {
+  background: #585858;
+  color: white;
+}

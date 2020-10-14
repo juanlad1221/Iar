@@ -1,0 +1,226 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    <br>
+    <div class="row d-flex justify-content-between" >
+    
+      <div class="col-6 bt p-1">
+        <!--Clima-->
+        <div class="col-6-md" style="margin-top: 2.4%;">
+          <div id="cont_d4a21369633b0b8e0734b91d3e0eef05">
+            <script type="text/javascript" async src="https://www.tiempo.com/wid_loader/d4a21369633b0b8e0734b91d3e0eef05"></script>
+          </div>
+        </div>
+
+      </div>
+
+      <!--Panel Notificaciones-->
+      <div class="col-6 bt">
+        gg
+      </div>
+    
+      <!--Comercios-->
+      <div class="col-12 p-3 d-flex justify-content-center bt">
+        <div class="d-flex flex-wrap mt-3" style="background: rgb(193, 197, 197); width: 80%; height: 400px; border-radius: 15px;padding: 2%;">
+          
+          <div class="d-flex flex-column align-items-center p-2 mr-3 mb-3" style="width: auto; height: 30%; 
+          background: darkgrey; border-radius: 15px;">
+            <p>AGREGAR</p>
+            <i id="btnagregar" class="fas fa-plus-circle fa-3x" data-toggle="modal" data-target=".bd-example-modal-sm" 
+              style="color: rgb(3, 150, 23); cursor: pointer;"></i>
+          </div>
+        
+          <% shops.forEach(e => { %>
+            
+            <div class="d-flex flex-column align-items-center p-2 mr-3 mb-3" style="width: auto; height: 45%; 
+              background: darkgrey; border-radius: 15px;">
+              <i class="fas fa-store fa-4x"></i>
+              <p class="name"><%= e.name%></p>
+              <p class="adress" style="margin-top: -20%;" ><%= e.adress%></p>
+              <div>
+                  <i id="btnEliminar" class="fas fa-trash fa-lg" data-toggle="tooltip" data-placement="top" title="Eliminar Comercio" style="color: crimson; cursor: pointer;"></i>
+                <% if(e.list === '') {%>
+                  <i class="fas fa-list-ol fa-lg ml-5 no-list" data-toggle="tooltip" data-placement="top" title="Agregar Lista" style="color: gray; cursor: pointer;"></i>
+                <% }else{ %>
+                  <i class="fas fa-list-ol fa-lg ml-5" data-toggle="tooltip" data-placement="top" title="<%=e.list%>" style="color:rgb(4, 173, 55);"></i>
+                <% } %>
+              </div>
+            </div>
+          
+          <%}) %>
+        </div>
+      </div>
+        
+    
+    
+      
+    
+
+    </div>
+</div>
+
+<!--Modal Nuevo Comercio-->
+<div id="ModalNuevoComercio" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nuevo Comercio</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" id="comercio" placeholder="Nombre" autocomplete="off">
+        <br>
+        <input type="text" class="form-control" id="direccion" placeholder="Direccion" autocomplete="off">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="location.reload()">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal Seleccion de Comercio-->
+<div id="ModalSeleccion" class="modal fade " tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Seleccionar Comercio</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+          <input type="text" class="form-control" placeholder="nombre del comercio" id="inputSeleccion" autocomplete="off">
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" onclick="window.location.reload()" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button id="btnSeleccion"  style="width: 19%;" type="button" class="btn btn-primary">Confirmar</button>
+      </div>
+  
+    </div>
+  </div>
+</div>
+
+
+<!--Modal Pin-->
+<div id="myModalPin" class="modal fade " tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title"><strong>Confirmar PIN</strong></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+          <input type="text" class="form-control" id="inputPin" autocomplete="off">
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" onclick="window.location.reload()" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button id="btnPin"  style="width: 19%;" type="button" class="btn btn-primary">Confirmar</button>
+      </div>
+  
+    </div>
+  </div>
+</div>
+
+
+
+<br><br>
+<a href="<%=pin%>" iduser="<%=id_user%>" style="visibility: hidden;" id="pin"></a>
+<%- include('block_end') %>
+
+
+<script>
+let pin = document.getElementById('pin')
+let inputPin = document.getElementById('inputPin')
+let btnPin = document.getElementById('btnPin')
+var id = pin.getAttribute('iduser')
+let comercio = document.getElementById('comercio')
+let direccion = document.getElementById('direccion')
+let btnGuardar = document.getElementById('btnGuardar')
+let inputSeleccion = document.getElementById('inputSeleccion')
+let btnSeleccion = document.getElementById('btnSeleccion')
+//Guardo el pin
+sessionStorage.setItem('pin','')
+sessionStorage.setItem('pin', pin.getAttribute('href'))
+
+
+
+
+//btn Guardar
+btnGuardar.onclick = () => {
+
+  if(!FrontValidate.input('comercio',['presence',{min:3},{max:30}],'windows')){
+    if(!FrontValidate.input('direccion',['presence',{min:4},{max:30}],'windows')){
+      
+      let com = comercio.value.toUpperCase()
+      let dir = direccion.value.toLowerCase()
+
+      Obj.ajaxConfigMsg('POST', '/CrearComercio',
+        {comercio:com, direccion:dir, id}, 'Creo un Comercio Exitosamente...', 
+        [{code:401,msg:'Error in Server: tipo de datos incorrecto...'},
+         {code:402,msg:'Error in Server: usuario inexistente...'},
+         {code:403,msg:'Error in Server: comercio existente...'}], '#ModalNuevoComercio')
+    }else{
+      window.location.reload()
+    }//end if
+
+  }else{
+    window.location.reload()
+  }//end if
+}//end btn
+
+//btn Eliminar
+$('.fa-trash').click(function(){
+  let result = confirm('UD. ELIMINARÁ EL COMERCIO SELECCIONADO. ¿DECEA HACERLO?')
+  if(result === false){
+    return false
+  }
+  //Muestro modal seleccion
+  $('#ModalSeleccion').modal('show')
+  //Focus en modal seleccion
+  $('#ModalSeleccion').on('shown.bs.modal', function () {
+        $('#inputSeleccion').focus()
+  })
+})//end btn
+
+//btn Seleccion
+btnSeleccion.onclick = () => {
+  if(!FrontValidate.input('inputSeleccion',['presence',{min:3},{max:30}],'windows')){
+    
+    //Oculto modal selecion
+    $('#ModalSeleccion').modal('hide')
+    //Muestro modal pin
+    $('#myModalPin').modal('show')
+    //Focus en modal pin
+    $('#myModalPin').on('shown.bs.modal', function () {
+        $('#inputPin').focus()
+    })
+  }else{
+      window.location.reload()
+    }//end if
+}//end btn
+
+
+btnPin.onclick = () => {
+    if(inputPin.value === sessionStorage.getItem('pin')){
+        Obj.ajaxConfigMsg('DELETE', '/EliminarComercio', {id,comercio:inputSeleccion.value.toUpperCase()}, 'Comercio Eliminado Exitosamente...',
+        [{code:401,msg:'Error in Server: tipo de datos incorrecto...'},
+         {code:402,msg:'Error in Server: usuario inexistente...'},
+         {code:403,msg:'Error in Server: comercio existente...'}], '#myModalPin')
+    }else{
+        alert('Error: PIN Incorrecto')
+    }//end if pin
+}//end btn
+
+</script>

@@ -1,0 +1,70 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    
+  
+  <!--Resto dispositivos-->
+  <div class="row d-none d-sm-block">
+      <br><br>
+    <div class="row d-flex justify-content-center" >
+      <h2>ESTADÍSTICAS</h2>
+    </div>
+    <br><br>
+
+    <div id="cont-estadistica" class=" d-flex flex-column align-items-center p-3" style="width: auto; background: rgb(189, 133, 226); border-radius: 15px;">
+      
+      <!--<label class="white" for=""> Hola mundo</label>
+      <div class="progress" style="height: 20px; width: 40%;">
+        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+      </div>
+      <br>
+      <label for=""> Hola mundo</label>
+      <div class="progress" style="height: 20px;width: 40%;">
+        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+      </div>
+      <br>
+      <label for=""> Hola mundo</label>
+      <div class="progress" style="height: 20px;width: 40%;">
+        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+      </div>-->
+
+    </div><!--cont estadistica-->
+    
+
+  </div>
+
+</div>
+<br><br>
+<%- include('block_end') %>
+
+
+<style>
+img{cursor:pointer;}
+
+
+
+</style>
+
+<script>
+let contEestadistica = document.getElementById('cont-estadistica')
+
+window.onload = ()=>{
+  $.ajax({
+    type:'GET',
+    url:'/estadisticasprofes',
+    //data:{}
+    }).done(async function(res){
+          $.each(res,function(key,val){
+            $('#cont-estadistica').append(`<label class='white'>${val.name}</label>
+      <div class='progress' style='height: 40px; width: 40%; margin-top:-0.9%'>
+        <div class='progress-bar' role='progressbar' style='width:${val.porcentaje}' aria-valuemin='0' aria-valuemax='100'>${val.porcentaje}</div>
+      </div> <br>`)
+          })//end each
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+}//end
+
+</script>

@@ -1,0 +1,326 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+
+
+<!--Resto dispositivos-->
+<div class="row d-none d-sm-block">
+    <br><br>
+  <div class="row d-flex justify-content-center" >
+    <h2>EDITAR INFORMES</h2>
+  </div>
+  <br><br>
+  <div class="col-sm-12 col-md-12">
+      <div class="row d-flex justify-content-around p-3">
+        
+        <div class="btn-group-vertical" style="width: 20%;" id="btn-container">
+         </div>
+         
+
+        <div class="p-2" style="width: 20%; background:#6D89B2; border-radius: 15px;">
+          <div class="form-group" style="text-align: center;">
+            <label for="select1" class="white">ALUMNOS</label>
+            <select id="idSelectAlum" class="custom-select">
+              
+            </select>
+          </div>
+        </div>
+        
+        <div class="d-flex flex-column" style="width: 35%;">
+          <div class="form-group" style="text-align: center;">
+            <label for="select1">NOTAS CONCEPTUALES</label>
+
+            <br><br>
+            <select name="select" id='SelectConcepto1' class="color-select custom-select">
+              <option selected disabled>SOCIO CONDUCTUAL Y REGLAMENTO INSTITUCIONAL</option>
+              <optgroup label="Positivas"></optgroup>
+              <% conceptos.forEach(function(e){ %>
+                <% if(e.tipo == 'SOCIO CONDUCTUAL Y REGLAMENTO INSTITUCIONAL' && e.positivo === true){ %>
+                <option value="<%=e._id%>">
+                 <%=e.concepto%>
+                </option>
+                <%}%>
+              <%})%>
+              </optgroup>
+              
+              <optgroup label="Negativas">
+                <% conceptos.forEach(function(e){ %>
+                  <% if(e.tipo == 'SOCIO CONDUCTUAL Y REGLAMENTO INSTITUCIONAL' && e.positivo === false){ %>
+                  <option value="<%=e._id%>">
+                   <%=e.concepto%>
+                  </option>
+                  <%}%>
+                <%})%>
+              </optgroup>
+            </select>
+
+            <br>
+            <select name="select" id="SelectConcepto2" class="color-select custom-select mt-5">
+              <option selected disabled>DESEMPEÑO SINCRÓNICO (VIDEOCLASES - Teams) </option>
+              <optgroup label="Positivas"></optgroup>
+              <% conceptos.forEach(function(e){ %>
+                <% if(e.tipo == 'DESEMPEÑO SINCRÓNICO (VIDEOCLASES - TEAMS)' && e.positivo === true){ %>
+                <option value="<%=e._id%>">
+                 <%=e.concepto%>
+                </option>
+                <%}%>
+              <%})%>
+              </optgroup>
+              
+              <optgroup label="Negativas">
+                <% conceptos.forEach(function(e){ %>
+                  <% if(e.tipo == 'DESEMPEÑO SINCRÓNICO (VIDEOCLASES - TEAMS)' && e.positivo === false){ %>
+                  <option value="<%=e._id%>">
+                   <%=e.concepto%>
+                  </option>
+                  <%}%>
+                <%})%>
+              </optgroup>
+            </select>
+            
+            
+            <select name="select" id="SelectConcepto3" class="color-select custom-select mt-5">
+              <option selected disabled>DESEMPEÑO ASINCRÓNICO (Eschool)</option>
+              <optgroup label="Positivas"></optgroup>
+              <% conceptos.forEach(function(e){ %>
+                <% if(e.tipo == 'DESEMPEÑO ASINCRÓNICO (Eschool)' && e.positivo === true){ %>
+                <option value="<%=e._id%>">
+                 <%=e.concepto%>
+                </option>
+                <%}%>
+              <%})%>
+              </optgroup>
+              
+              <optgroup label="Negativas">
+                <% conceptos.forEach(function(e){ %>
+                  <% if(e.tipo == 'DESEMPEÑO ASINCRÓNICO (Eschool)' && e.positivo === false){ %>
+                  <option value="<%=e._id%>">
+                   <%=e.concepto%>
+                  </option>
+                  <%}%>
+                <%})%>
+              </optgroup>
+            </select>
+          </div>
+          
+        </div>
+
+        <div>
+          <button id="btnGuardar" class="btn btn-secondary" style="height: 100%;">GUARDAR</button>
+        </div>
+        
+      </div>
+      <br><br><br>
+      
+      <div class="d-flex justify-content-center">
+      <div class="" style="width: 70%;">
+        <table id="example" class="table table-bordered" style="text-align: center; 
+        background: rgb(209, 207, 207);">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>APELLIDO/S</th>
+                  <th>NOMBRE/S</th>
+                  <th>CURSO</th>
+                  <th>MATERIA</th>
+                  <th>CUATRIMESTRE</th>
+                  <th>ACCIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  
+      </div>
+    </div>
+      
+  </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">CONCEPTOS CARGADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="content_modal">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+<br><br>
+<%- include('block_end') %>
+<style>
+.color-select{
+    color:gray;
+  }
+.cursor{
+    cursor: pointer;
+  }
+.fa-search:hover{
+    color: rgb(75, 129, 211);
+}
+.fa-trash:hover{
+  color: brown;
+}
+
+
+.selected{background: burlywood;}
+</style>
+
+<script>
+let dod = document.getElementById('content_modal');
+//let btn5cn = document.getElementById('5CN')
+var id;
+var id_curso;
+var materia;
+var id_materia;
+let id_combo = document.getElementById('idSelectAlum')
+let btnGuardar = document.getElementById('btnGuardar')
+//let arrCursos = document.getElementById('cursos')
+
+window.onload = ()=>{
+  $.ajax({
+    type:'GET',
+    url:'/cursosAsignados',
+    //data:{}
+    }).done(async function(res){
+          $.each(res,function(key,val){
+            $('#btn-container').append(`<button id_materia='${val.id_materia}' materia='${val.materia}' id='${val.curso}' class='btn btn-primary mb-1'>${val.curso + ' '+ val.materia}</button>`)
+          })//end each
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+}//end
+
+//Muestra la tabla
+$('#example').DataTable({
+    ajax: "/conceptos",
+    language: {url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"},
+    order: [[ 3, "asc" ]],
+    columns: [
+            { "data": "_id" },
+            { "data": "last_name" },
+            { "data": "name" },
+            { "data": "curso" },
+            { "data": "materia" },
+            { "data": "cuatrimestre" },
+            {
+            "defaultContent": "<div class='d-flex justify-content-center'> <i  data-toggle='tooltip' data-placement='top' title='Ver' class='cursor fas fa-search fa-lg icon mr-4'></i> <i data-toggle='tooltip' data-placement='top' title='Borrar' class='cursor fa fa-trash fa-lg' aria-hidden='true'></i></div>"
+            }],
+})//end tabla
+
+//Click botones
+$('body').on( 'click', '.btn', function () {
+  id_curso = this.getAttribute("id")
+  materia = this.getAttribute("materia")
+  id_materia = this.getAttribute('id_materia')
+  limpiar()
+  Obj.cargarSelectConAjax('POST','/alumnos',{curso:id_curso,materia},'#idSelectAlum')
+})
+
+
+btnGuardar.onclick = () => {
+if ($("#idSelectAlum option:selected").val() == 'Seleccione...') {alert('ERROR: DEBE SELECCIONAR UN ALUMNO...'); return false}
+if ($("#SelectConcepto1 option:selected").val() == 'SOCIO CONDUCTUAL Y REGLAMENTO INSTITUCIONAL') {alert('ERROR: DEBE SELECCIONAR UN CONCEPTO...'); return false}
+if ($("#SelectConcepto2 option:selected").val() == 'DESEMPEÑO SINCRÓNICO (VIDEOCLASES - Teams)') {alert('ERROR: DEBE SELECCIONAR UN CONCEPTO...'); return false}
+if ($("#SelectConcepto3 option:selected").val() == 'DESEMPEÑO ASINCRÓNICO (Eschool)') {alert('ERROR: DEBE SELECCIONAR UN CONCEPTO...'); return false}
+
+let alumno = $("#idSelectAlum option:selected").val()
+let select1 = $("#SelectConcepto1 option:selected").val()
+let select2 = $("#SelectConcepto2 option:selected").val()
+let select3 = $("#SelectConcepto3 option:selected").val()
+
+Obj.ajaxConfigMsg('POST','/agregar',{alumno,select1,select2,select3,materia,id_materia,cuatrimestre:queCuatrimestreEs()},
+'SE CARGÓ CORRECTAMENTE',[{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
+{code:402, msg:'ERROR ON SERVER: INFORME CONCEPTUAL DUPLICADO...'}])
+}
+
+
+//Selecciona elementos en tabla Borrar
+$('#example tbody').on( 'click', '.fa-trash', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+    
+    if (confirm("UD. BORRARÁ EL ELEMENTO SELECCIONADO. ¿DESEA HACERLO?")) {
+      Obj.ajaxConfigMsg('DELETE','/delete',{id}, 'SE BORRÓ CORRECTAMENTE',
+      [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
+      {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}])
+    } else {
+      return false
+    }
+})
+
+//Selecciona elementos en tabla Ver
+$('#example tbody').on( 'click', '.fa-search', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+    
+    $.ajax({
+    type:'POST',
+    url:'/datosModal',
+    data:{id}
+    }).done(async function(res){
+      dod.innerHTML = ''
+      $.each(res,function(key,val){
+        $('#content_modal').append(`<div>
+         <h5 style="color:#179AF5">${ val.tipo}</h5>
+         <ul>
+           <li style="font-size: 17px;">${ val.concepto}</li>
+           <li>${ val.positivo}</li>
+         </ul>
+       </div>
+       <br>`)
+      })
+      
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+
+    $('#myModal').modal('show')
+})
+
+
+
+
+
+
+
+
+
+//Funciones
+const limpiar = () => {
+  const $select = document.querySelector("#idSelectAlum");
+  for (let i = $select.options.length; i >= 0; i--) {
+    $select.remove(i);
+  }
+  //$select.innerHTML =  '<option selected disabled></option>'
+}
+
+function queCuatrimestreEs(){
+  let mes = new Date()
+  if((mes.getMonth() + 1) <= 7){
+    return '1'
+  }
+  if((mes.getMonth() + 1) >= 8){
+    return '2'
+  }
+}
+ </script>

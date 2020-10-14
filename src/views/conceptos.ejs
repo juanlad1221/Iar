@@ -1,0 +1,128 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    
+  <!--Mobile first-->
+  <div class="d-block d-sm-none">
+    <br>
+    <div class="row d-flex justify-content-center" >
+      <h4>EDITAR CONCEPTOS</h4>
+    </div>
+    <br>
+
+    <div class="bt" style="display: flex; flex-direction: column; align-items: center;">
+      
+      <img src="/img/Group 13.png" alt="" style="width: 30%; height: auto;">
+      <p>VER INFORME</p>
+        <br>
+
+        <img src="/img/Group 12.png" alt="" style="width: 30%; height: auto;">
+        <p>EDITAR INFORME</p>
+    </div>
+
+  </div>
+
+
+
+  <!--Resto dispositivos-->
+  <div class="row d-none d-sm-block">
+      <br><br>
+    <div class="row d-flex justify-content-center" >
+      <h2>EDITAR CONCEPTOS</h2>
+    </div>
+    <br><br>
+
+    <div class="d-flex justify-content-center">
+      <div class="" style="width: 100%;">
+        <table id="example" class="table table-bordered" style="text-align: center; 
+        background: rgb(209, 207, 207);">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>GRUPO</th>
+                  <th>CONCEPTO</th>
+                  <th>VALORACIÓN</th>
+                  <th>ACCIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  
+      </div>
+    </div>
+
+
+</div>
+
+<br><br>
+<%- include('block_end') %>
+
+
+<style>
+img{cursor:pointer;}
+
+.cursor{
+    cursor: pointer;
+  }
+.fa-edit:hover{
+    color: rgb(75, 129, 211);
+}
+.fa-trash:hover{
+  color: brown;
+}
+
+
+</style>
+
+<script>
+
+//Muestra la tabla
+$('#example').DataTable({
+    ajax: "/api-conceptos",
+    language: {url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"},
+    order: [[ 1, "asc" ]],
+    columns: [
+            { "data": "id" },
+            { "data": "tipo" },
+            { "data": "concepto" },
+            { "data": "valoracion" },
+            {
+            "defaultContent": "<div class='d-flex justify-content-center'> <i  data-toggle='tooltip' data-placement='top' title='Editar' class='cursor fas fa-edit fa-lg icon mr-4'></i> <i data-toggle='tooltip' data-placement='top' title='Borrar' class='cursor fa fa-trash fa-lg' aria-hidden='true'></i></div>"
+            }],
+})//end tabla
+
+ 
+ //Selecciona elementos en tabla Borrar
+$('#example tbody').on( 'click', '.fa-trash', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+    
+    /*if (confirm("UD. BORRARÁ EL ELEMENTO SELECCIONADO. ¿DESEA HACERLO?")) {
+      Obj.ajaxConfigMsg('DELETE','/delete',{id}, 'SE BORRÓ CORRECTAMENTE',
+      [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
+      {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}])
+    } else {
+      return false
+    }*/
+    alert(id)
+})
+
+
+$('#example tbody').on( 'click', '.fa-edit', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+  alert(id)
+})//end
+
+
+   
+    
+
+
+
+
+
+
+
+
+  
+</script>

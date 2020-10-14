@@ -1,0 +1,118 @@
+/******************************ESTILOS CSS*******************************************************/
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:100,400,300,500,600,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700);
+
+
+/*-------Body----------------------------------------------------*/
+html, body{
+  position: relative;/*NECESARIO PARA LA EL SLIDEPUSH*/
+  height: 100%;/*NECESARIO PARA LA EL SLIDEPUSH*/
+ 	transition: all 0.3s linear;/*NECESARIO PARA LA EL SLIDEPUSH*/
+  right: 0;/*NECESARIO PARA LA EL SLIDEPUSH*/
+  background-color: #eeeeee;
+  color: rgba(118, 118, 118, 1.0);
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  padding: 0px !important;
+  margin: 0px !important;
+  line-height: 23px;
+  font-style: normal;
+  font-weight: normal;
+  min-height: 100%;
+}
+
+
+#load {
+  position: fixed; /* Sit on top of the page content */
+  display: none; /* Hidden by default */
+  width: 100%; /* Full width (cover the whole page) */
+  height: 100%; /* Full height (cover the whole page) */
+  top: 0; 
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.8); /* Black background with opacity */
+  z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+  cursor: pointer; /* Add a pointer on hover */
+  /*url('../public/img/Cube-1s-200px.gif');*/
+}
+
+
+#text{
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  font-size: 50px;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+#link_home:hover{
+  background:#585858;
+}
+
+
+
+
+
+
+
+
+/*----- CLASES COMUNES ---------------------------------------------------------------------------*/
+*{margin: 0;padding: 0;}
+.bt{border:1px solid blue;}
+
+/*  Fonts  */
+.font-1{font-family: 'Montserrat', sans-serif;}
+.font-2{font-family: 'Roboto', sans-serif;}
+.font-3{font-family: 'Lato', Calibri, Arial, sans-serif;}
+.font-4{font-family: 'Ubuntu', sans-serif;}
+.font-5{font-family: 'Josefin Sans', sans-serif;}
+.font-6{font-family: 'Ravi Prakash', cursive;}
+.font-gruesa{font-weight: bold;}
+.font-lato1{font-weight:400;}
+.font-lato2{font-weight: 700;}
+
+/*   Color  */
+.black{color: black;}
+.blue{color:blue;}
+.white{color: white;}
+.green{color:green;}
+.red{color:red;}
+.color-p{background:#3F51B5;height:7%;}
+
+/*   size  */
+.size30{font-size: 30px}
+.size25{font-size: 25px}
+.size20{font-size: 20px}
+.size18{font-size: 18px}
+.size15{font-size: 15px}
+.size12{font-size: 12px}
+.size10{font-size: 10px}
+
+
+a.icono:hover{color:gray !important;}
+
+.disabled{
+  cursor: default;
+  opacity: 0.45 !important;
+  background-image: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+}
+
+
+.link_grey:hover {
+color: black;
+}
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,228 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    
+  
+  <!--Resto dispositivos-->
+  <div class="row d-none d-sm-block">
+      <br><br>
+    <div class="row d-flex justify-content-center" >
+      <h2>MENÚ PRECEPTORES</h2>
+    </div>
+    <br><br>
+
+    <div class="row">
+      <div class="col-sm-3" style="display: flex; flex-direction: column;
+      align-items: center; justify-content: center;">
+        <div class="btn-group-vertical" style="width: 50%;" id="btn-container">
+        </div>
+      </div>
+
+      <div class="col-sm-3" style="display: flex; flex-direction: column;
+      align-items: center; justify-content: center;">
+           
+           <div style="width: 90%;">
+            <div class="form-group" style="text-align: center;">
+              <label for="select1">ALUMNOS</label>
+              <select id="idSelectAlum" class="custom-select">
+                
+              </select>
+            </div>
+          </div>
+
+          <button id="btnConsultar" class="btn btn-secondary disabled" style="width: 90%;">Consultar</button>
+
+      </div>
+
+      <div class="col-sm-6 d-flex justify-content-end align-items-center" style="background: rgb(166, 146, 238);" >
+          <h4 style="color: white; font-size: 80px;" id="cont_curso"></h4>
+      </div>
+
+      
+
+    </div>
+
+    <br><br><br>
+  
+    <div class="row d-flex justify-content-center ">
+      <div class="d-flex p-2 align-items-center justify-content-between" style="width: 80%; height: 40px; background:rgb(221, 219, 219)">
+        <h5 id="msg" class="ok"></h5>
+        <div id="ver">
+          
+        </div>
+      </div>
+    </div>
+   
+  </div>
+
+
+</div>
+
+
+
+
+
+
+<br><br>
+<%- include('block_end') %>
+
+
+<style>
+img{cursor:pointer;}
+.ok{
+  color: green;
+}
+.error{
+  color: red;
+}
+
+
+</style>
+
+<script>
+var alumno;
+var id_alumno;
+var id_curso;
+let selectAlumno = document.getElementById('idSelectAlum')
+let cont_curso = document.getElementById('cont_curso')
+let btnConsultar = document.getElementById('btnConsultar')
+let msg = document.getElementById('msg')
+let ver = document.getElementById('ver')
+
+
+
+
+//Botones del prceptor
+window.onload = ()=>{
+  $.ajax({
+    type:'GET',
+    url:'/cursosAsignadosPreceptores',
+    //data:{}
+    }).done(async function(res){
+          $.each(res,function(key,val){
+            $('#btn-container').append(`<button id='${val.curso}' class='btn btn-primary mb-1 ico'>${val.curso}</button>`)
+          })//end each
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+}//end
+
+
+
+//Click botones
+$('body').on( 'click', '.ico', function () {
+  event.preventDefault();
+  id_curso = this.getAttribute("id")
+  
+  cont_curso.innerHTML = id_curso
+  msg.innerHTML = ''
+  ver.innerHTML = ''
+  limpiar()
+  btnConsultar.classList.remove('disabled')
+  Obj.cargarSelectConAjax('POST','/alumnos2',{curso:id_curso},'#idSelectAlum')
+})
+ 
+ 
+btnConsultar.onclick = () => {
+  event.preventDefault();
+  cont_curso.innerHTML = ''
+  btnConsultar.classList.add('disabled')
+  if ($("#idSelectAlum option:selected").val() == 'Seleccione...') {alert('ERROR: DEBE SELECCIONAR UN ALUMNO...');btnConsultar.classList.remove('disabled'); return false}
+
+  alumno = $("#idSelectAlum option:selected").val()
+  
+  limpiar()
+
+  $.ajax({
+    type:'POST',
+    url:'/consultar',
+    data:{id_alumno:alumno, cuatrimestre:queCuatrimestreEs()}
+    }).done(async function(res){
+          
+          
+          if(res.generar === true){
+            msg.innerHTML = 'INFORME CONCEPTUAL COMPLETO'
+            if(msg.classList.contains('error')){
+              msg.classList.replace('error','ok')
+            }
+            ver.innerHTML = "<button class='btn btn-primary ico2'>Generar</button>"
+            //window.location.reload()
+          }else{
+            msg.innerHTML = 'INFORME CONCEPTUAL INCOMPLETO'
+            if(msg.classList.contains('ok')){
+              msg.classList.replace('ok','error')
+            }
+            ver.innerHTML = ""
+          }
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+
+}//end
+
+   
+//Click botones
+$('body').on( 'click', '.ico2', function () {
+  event.preventDefault();
+  id_curso 
+  
+  $.ajax({
+    type:'POST',
+    url:'/descarga',
+    data:{id_alumno:alumno, curso:id_curso, cuatrimestre:queCuatrimestreEs()}
+    }).done(async function(res){
+          if(res.status === true){
+            toastr.success('El Informe Se Generó Correctamente...', 'OK', { timeOut: 3000 })
+            ver.innerHTML = ''
+            ver.innerHTML = "<button onclick=Ver() class='btn btn-primary ico2'>Ver</button>"
+          }
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 2000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+  
+  
+})
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+function queCuatrimestreEs(){
+  let mes = new Date()
+  if((mes.getMonth() + 1) <= 7){
+    return '1'
+  }
+  if((mes.getMonth() + 1) >= 8){
+    return '2'
+  }
+}
+
+//Funciones
+const limpiar = () => {
+  const $select = document.querySelector("#idSelectAlum");
+  for (let i = $select.options.length; i >= 0; i--) {
+    $select.remove(i);
+  }
+  //$select.innerHTML =  '<option selected disabled></option>'
+}
+
+function Ver(){
+  window.open('/verinforme');
+  //window.location.href = '/verinforme'
+}
+
+</script>
