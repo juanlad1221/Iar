@@ -30,10 +30,14 @@
     <div class="row d-flex justify-content-center" >
       <h2>EDITAR CONCEPTOS</h2>
     </div>
-    <br><br>
+    <br><br><br>
 
+    <div class="d-flex justify-content-end">
+      <button id="btnCrear" class="btn btn-primary">Crear</button>
+    </div>
     <div class="d-flex justify-content-center">
-      <div class="" style="width: 100%;">
+      
+      <div class="mt-2" style="width: 100%;">
         <table id="example" class="table table-bordered" style="text-align: center; 
         background: rgb(209, 207, 207);">
           <thead>
@@ -56,6 +60,46 @@
 </div>
 
 <br><br>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex justify-content-center" id="content_modal">
+        <div class="form-group" style="text-align: center; width: 50%;">
+          <label for="select1">GRUPO</label>
+          <select id="idSelectGrupo" class="custom-select">
+            
+          </select>
+          <br><br>
+
+          <input type="text" class="form-control mt-4" id="txtInput"  placeholder="Definir Grupo">
+          
+          <br><br>
+          <label for="select2">VALORACIÓN</label>
+          <select id="idSelectValoracion" class="custom-select">
+            <option value="">Seleccionar...</option>
+            <option value="">Positiva</option>
+            <option value="">Negativa</option>
+          </select> 
+        </div>
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
 <%- include('block_end') %>
 
 
@@ -76,6 +120,34 @@ img{cursor:pointer;}
 </style>
 
 <script>
+let btnCrear = document.getElementById('btnCrear')
+let selectGrupo = document.getElementById('idSelectGrupo')
+let txtInput = document.getElementById('txtInput')
+let selectVal = document.getElementById('idSelectValoracion')
+let btnGuardar = document.getElementById('btnGuardar')
+let tituloModal = document.getElementById('exampleModalLabel')
+
+
+window.onload = () =>{
+  $.ajax({
+    type:'GET',
+    url:'/grupos',
+    //data:{}
+    }).done(async function(res){
+          limpiar()
+          $('#idSelectGrupo').append(`<option>Seleccionar...</option>`)
+          $.each(res,function(key,val){
+            $('#idSelectGrupo').append(`<option>${val.name}</option>`)
+          })//end each
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })
+}//end
+
+
+
 
 //Muestra la tabla
 $('#example').DataTable({
@@ -97,30 +169,77 @@ $('#example').DataTable({
 $('#example tbody').on( 'click', '.fa-trash', function () {
     id = $(this).parents("tr").find("td").eq(0).text()
     
-    /*if (confirm("UD. BORRARÁ EL ELEMENTO SELECCIONADO. ¿DESEA HACERLO?")) {
-      Obj.ajaxConfigMsg('DELETE','/delete',{id}, 'SE BORRÓ CORRECTAMENTE',
+    if (confirm("UD. BORRARÁ EL ELEMENTO SELECCIONADO. ¿DESEA HACERLO?")) {
+      Obj.ajaxConfigMsg('DELETE','/deleteConcept',{id}, 'SE BORRÓ CORRECTAMENTE',
       [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
       {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}])
     } else {
       return false
-    }*/
-    alert(id)
+    }
+    //alert(id)
 })
 
 
 $('#example tbody').on( 'click', '.fa-edit', function () {
     id = $(this).parents("tr").find("td").eq(0).text()
-  alert(id)
+    
+
+    $.ajax({
+    type:'POST',
+    url:'/updateConcept',
+    data:{id}
+    }).done(async function(res){
+          tituloModal.innerHTML = 'EDITAR CONCEPTO'
+          $('#myModal').modal('show')
+          //$('#idSelectGrupo').append(`<option>${res.tipo}</option>`)
+          //$('#idSelectValoracion').append(`<option>${res.valoracion}</option>`)
+          txtInput.value = res.concepto
+    }).fail(async function(err){
+      if(err === '401'){
+        toastr.error('Elemento Duplicado...', 'ERROR', { timeOut: 3000 })
+        await sleep(2000)
+      }else{
+        toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+        await sleep(2000)
+      }
+      //console.log(err)
+      window.location.reload()
+    })
+
 })//end
 
 
-   
+ btnCrear.onclick = ()=>{
+   tituloModal.innerHTML = 'CREAR CONCEPTO'
+   $('#myModal').modal('show')
+}  
     
 
+btnGuardar.onclick = ()=>{
+  if ($("#idSelectGrupo option:selected").val() == 'Seleccionar...') {alert('ERROR: DEBE SELECCIONAR UN GRUPO...'); return false}
+  if (selectVal.options[selectVal.selectedIndex].text == 'Seleccionar...') {alert('ERROR: DEBE SELECCIONAR UNA VALORACIÓN...'); return false}
+  if(txtInput.value === ''){alert('ERROR: EL CAMPO ESTÁ VACIO...'); return false}
+
+  let tipo = $("#idSelectGrupo option:selected").val()
+  let positivo = selectVal.options[selectVal.selectedIndex].text
+  let concepto = txtInput.value
+
+  Obj.ajaxConfigMsg('POST','/addconcept',{concepto,positivo,tipo}, 'SE AGREGÓ CORRECTAMENTE',
+      [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
+      {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}],'#myModal')
+
+}//end  
 
 
 
 
+const limpiar = () => {
+  const $select = document.querySelector("#idSelectGrupo");
+  for (let i = $select.options.length; i >= 0; i--) {
+    $select.remove(i);
+  }
+  //$select.innerHTML =  '<option selected disabled></option>'
+}
 
 
 

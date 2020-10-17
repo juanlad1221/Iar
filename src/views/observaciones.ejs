@@ -1,0 +1,168 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    
+  <!--Mobile first-->
+  <div class="d-block d-sm-none">
+    <br>
+      <h5>Solo Visible en PC</h5>
+    <br>
+  </div>
+
+  <!--Resto dispositivos-->
+  <div class="row d-none d-sm-block">
+      <br><br>
+    <div class="row d-flex justify-content-center" >
+      <h2>OBSERVACIONES</h2>
+    </div>
+    <br><br><br>
+
+    <div class="row d-flex justify-content-center">
+      
+      <div class="" style="width: 90%;">
+        <table id="example" class="table table-bordered" style="text-align: center; 
+        background: rgb(209, 207, 207);">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>APELLIDO/S</th>
+                  <th>NOMBRE/S</th>
+                  <th>CURSO</th>
+                  <th>ACCIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  
+      </div>
+
+    </div>
+     
+
+      
+  </div>
+
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">AGREGAR OBSERVACIÓN</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="content_modal">
+        <br>
+        <form action="">
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Observación:</label>
+            <textarea class="form-control" id="idTextArea" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<br><br>
+<%- include('block_end') %>
+
+
+<style>
+img{cursor:pointer;}
+
+.cursor{
+    cursor: pointer;
+  }
+.fa-plus-circle:hover{
+    color: rgb(75, 129, 211);
+}
+.fa-trash:hover{
+  color: brown;
+}
+</style>
+
+<script>
+let txtArea = document.getElementById('idTextArea')
+let btnGuardar = document.getElementById('btnGuardar')
+
+//tabla
+$('#example').DataTable({
+    ajax: "/api-alumnos",
+    language: {url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"},
+    order: [[ 3, "asc" ]],
+    columns: [
+            { "data": "_id" },
+            { "data": "last_name" },
+            { "data": "name" },
+            { "data": "curso" },
+            {
+            "defaultContent": "<div class='d-flex justify-content-center'> <i data-toggle='tooltip' data-placement='top' title='Agregar Comentario' class='cursor mr-4 fas fa-plus-circle fa-lg' aria-hidden='true'></i> <i data-toggle='tooltip' data-placement='top' title='Borrar' class='cursor fa fa-trash fa-lg' aria-hidden='true'></i> </div>"
+            }],
+})//end tabla
+
+ 
+//Crear observacion
+$('#example tbody').on( 'click', '.fa-plus-circle', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+    
+    $('#myModal').modal('show') 
+})
+
+//Borrar
+$('#example tbody').on( 'click', '.fa-plus-circle', function () {
+    id = $(this).parents("tr").find("td").eq(0).text()
+    
+    $('#myModal').modal('show') 
+})
+   
+btnGuardar.onclick = () => {
+  let comentario = txtArea.value
+
+  /*$.ajax({
+    type:'POST',
+    url:'/',
+    data:{id,comentario}
+    }).done(async function(res){
+          
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      //window.location.reload()
+    })*/
+  Obj.ajaxConfigMsg('POST','/addComment',{id,comentario,cuatrimestre:queCuatrimestreEs()},
+'SE CARGÓ CORRECTAMENTE',[{code:401, msg:'ERROR ON SERVER: DATO DUPLICADO...'},
+{code:402, msg:'ERROR ON SERVER: INFORME CONCEPTUAL DUPLICADO...'}],'#myModal')
+
+}//end  
+
+
+
+
+
+
+
+function queCuatrimestreEs(){
+  let mes = new Date()
+  if((mes.getMonth() + 1) <= 7){
+    return '1'
+  }
+  if((mes.getMonth() + 1) >= 8){
+    return '2'
+  }
+}
+  
+</script>

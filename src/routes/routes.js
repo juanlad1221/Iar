@@ -27,6 +27,7 @@ const Alumnos = require('../schemas/Alumnos')
 const Alumnos_Conceptos = require('../schemas/Alumnos_Conceptos')
 const Materias = require('../schemas/Materias')
 const Observaciones = require('../schemas/Observaciones')
+const Grupos = require('../schemas/Grupos')
 const { forEach, each } = require("lodash");
 
 //Creo el obj router
@@ -69,12 +70,12 @@ router.get('/home',IsAuthenticated ,async function (req, res) {
 
 
 //Profes
-router.get('/profes' ,async function (req, res) {
-
+router.get('/profes', IsAuthenticated ,async function (req, res) {
+  //console.log(req.sessionID)
   res.status(200).render('../views/menu_profes',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
 })//end get
 
-router.get('/editarInformes' ,async function (req, res) {
+router.get('/editarInformes', IsAuthenticated ,async function (req, res) {
   let arr = []
   //let cursos_asignados = await User.where({active:true, _id:ObjectId(req.user.id)})
   let conceptos = await Conceptos.where({active:true})
@@ -84,14 +85,14 @@ router.get('/editarInformes' ,async function (req, res) {
     sexo:req.user.sexo , conceptos, tipo:req.user.tipo})
 })//end get
 
-router.get('/conceptos', async function(req,res){
+router.get('/conceptos', IsAuthenticated ,async function(req,res){
   let usuario = req.user.id
   let result = await Alumnos_Conceptos.where({user:ObjectId(usuario)})
   let dato = {data:result}
   res.status(200).json(dato)
 })//end get
 
-router.post('/alumnos' ,async function (req, res) {
+router.post('/alumnos', IsAuthenticated ,async function (req, res) {
   let data = []
   let alumnos = await Alumnos.where({active:true,curso:req.body.curso})
   let alumnos_conceptos = await Alumnos_Conceptos.where({cuatrimestre:queCuatrimestreEs()})
@@ -128,13 +129,13 @@ router.post('/alumnos' ,async function (req, res) {
   res.status(200).json(Tools.Obj.sortArrayOfObjectsByAnyField(arrEnviar,'last_name'))
 })//end post
 
-router.get('/cursosAsignados', async function(req,res){
+router.get('/cursosAsignados', IsAuthenticated ,async function(req,res){
   let cursos_asignados = await User.where({active:true, _id:ObjectId(req.user.id)})
   
   res.status(200).json(cursos_asignados[0].cursos)
 })//end get
 
-router.post('/datosModal', async function(req, res){
+router.post('/datosModal', IsAuthenticated ,async function(req, res){
   let arr = []
   let valoracion;
   let id = req.body.id
@@ -171,7 +172,7 @@ router.post('/datosModal', async function(req, res){
   res.status(200).json(arr)
 })//end post
 
-router.post('/agregar' ,async function (req, res) {
+router.post('/agregar', IsAuthenticated ,async function (req, res) {
   if(typeof(req.body.alumno) !== 'string' || req.body.alumno == '' || req.body.alumno == null){
     res.status(401).end()
     return false
@@ -233,12 +234,7 @@ router.post('/agregar' ,async function (req, res) {
     nuevo.user = ObjectId(usuario)
     nuevo.materia = materia
     nuevo.id_materia = ObjectId(id_materia)
-    /*nuevo.conceptos.push({
-      1:req.body.select1, nombre:concepto1[0].concepto,
-      2:req.body.select2, nombre:concepto2[0].concepto,
-      3:req.body.select3, nombre:concepto3[0].concepto,
-      
-    })*/
+   
     nuevo.conceptos = obj
     nuevo.save(function(err){
       if (err) throw err;
@@ -251,7 +247,7 @@ router.post('/agregar' ,async function (req, res) {
 
 })//end post
 
-router.delete('/delete', async function(req, res){
+router.delete('/delete', IsAuthenticated ,async function(req, res){
   if(typeof(req.body.id) !== 'string' || req.body.id == '' || req.body.id == null){
     res.status(401).end()
     return false
@@ -261,13 +257,13 @@ router.delete('/delete', async function(req, res){
   res.status(200).end()
 })//end delete
 
-router.get('/estadisticas', function(req,res){
+router.get('/estadisticas', IsAuthenticated ,function(req,res){
 
   res.status(200).render('../views/estadisticas',{user: req.user.show_name,
     sexo:req.user.sexo ,tipo:req.user.tipo})
 })//end
 
-router.get('/estadisticasprofes',async function(req,res){
+router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
   let arr = []
   let cursos_asignados = await User.where({active:true, _id:ObjectId(req.user.id)})
   let conceptos = await Alumnos_Conceptos.where({})  
@@ -294,16 +290,16 @@ router.get('/estadisticasprofes',async function(req,res){
   res.status(200).json(arr)
 })//end get
 
-router.post('/observaciones',async function(req,res){
+/*router.post('/observaciones', IsAuthenticated ,async function(req,res){
   let idAlumno = req.body.id
   let obs =await Observaciones.where({id_alumno:ObjectId(idAlumno)})
 
   console.log(obs)
-})//end
+})//end*/
 
 
 //Preceptores
-router.get('/botones', async function(req,res){
+router.get('/botones', IsAuthenticated ,async function(req,res){
   let cursos_asignados = await User.where({active:true, _id:ObjectId(req.body.id)})
   let arr = cursos_asignados[0].cursos.sort(function (a, b) {
             
@@ -319,12 +315,12 @@ router.get('/botones', async function(req,res){
   res.status(200).json(arr)
 })//end get
 
-router.get('/preceptores', async function(req,res){
+router.get('/preceptores', IsAuthenticated ,async function(req,res){
   let arrEnviar = []
   res.status(200).render('../views/menu_preceptores',{arrEnviar,user: req.user.show_name, sexo:req.user.sexo, tipo:req.user.tipo})
 })//end get
 
-router.get('/cursosAsignadosPreceptores', async function(req,res){
+router.get('/cursosAsignadosPreceptores', IsAuthenticated ,async function(req,res){
 
   let cursos_asignados_preceptores = await User.where({active:true, _id:ObjectId(req.user.id)})
   //console.log(cursos_asignados_preceptores[0].cursos)
@@ -332,7 +328,7 @@ router.get('/cursosAsignadosPreceptores', async function(req,res){
   
 })//end get
 
-router.post('/alumnos_preceptor' ,async function (req, res) {
+router.post('/alumnos_preceptor', IsAuthenticated ,async function (req, res) {
   let data = []
   //console.log(req.body.curso)
   let alumnos = await Alumnos.where({active:true,curso:req.body.curso})
@@ -358,7 +354,7 @@ router.post('/alumnos_preceptor' ,async function (req, res) {
   res.status(200).json(arrEnviar)
 })//end post
 
-router.post('/alumnos2', async function(req,res){
+router.post('/alumnos2', IsAuthenticated ,async function(req,res){
   let curso = req.body.curso
   
   let alumnos = await Alumnos.where({curso:curso}).sort({last_name:1})
@@ -367,7 +363,7 @@ router.post('/alumnos2', async function(req,res){
   
 })//end
 
-router.post('/consultar', async function(req,res){
+router.post('/consultar', IsAuthenticated ,async function(req,res){
   let id_alumno = req.body.id_alumno
   let cuatrimestre = req.body.cuatrimestre
   
@@ -393,12 +389,12 @@ router.post('/consultar', async function(req,res){
 
 
 //Psicopedagoga
-router.get('/psicopedagoga' ,async function (req, res) {
+router.get('/psicopedagoga', IsAuthenticated ,async function (req, res) {
 
   res.status(200).render('../views/menu_psico',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
 })//end get
 
-router.post('/estadisticaspsico',async function(req,res){
+router.post('/estadisticaspsico', IsAuthenticated ,async function(req,res){
   let arr = []
   let cuatrimestre = req.body.cuatrimestre
   let materias = await Materias.where({})
@@ -422,18 +418,18 @@ router.post('/estadisticaspsico',async function(req,res){
   res.status(200).json(arr)
 })//end get
 
-router.get('/estadisticaspsicopagina', function(req,res){
+router.get('/estadisticaspsicopagina', IsAuthenticated ,function(req,res){
 
   res.status(200).render('../views/estadisticas2',{user: req.user.show_name,
     sexo:req.user.sexo ,tipo:req.user.tipo})
 })//end
 
-router.get('/conceptospsico' ,async function (req, res) {
+router.get('/conceptospsico', IsAuthenticated ,async function (req, res) {
 
   res.status(200).render('../views/conceptos',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
 })//end get
 
-router.get('/api-conceptos' ,async function (req, res) {
+router.get('/api-conceptos', IsAuthenticated ,async function (req, res) {
   let arr = []
   let valoracion_ = ''
   let conceptos = await Conceptos.where({active:true})
@@ -451,12 +447,117 @@ router.get('/api-conceptos' ,async function (req, res) {
   res.status(200).json(dato)
 })//end get
 
+router.post('/addconcept', IsAuthenticated ,async function(req,res){
+  let concepto = req.body.concepto
+  let tipo = req.body.tipo
+  let positivo = req.body.positivo
+
+  if(positivo === 'Positiva'){
+    positivo = true
+  }
+  if(positivo === 'Negativa'){
+    positivo = false
+  }
+
+  let result = await Conceptos.where({active:true, tipo:tipo, concepto:concepto, positivo:positivo})
+
+  if(result.length !== 0){
+    res.status(401).end()
+    return false
+  }
+
+  let dato = new Conceptos()
+  dato.concepto = concepto
+  dato.tipo = tipo
+  dato.positivo = positivo
+  dato.save(function(err){
+    if (err) throw err;
+    res.status(200).end()
+  })
+})//end
+
+router.delete('/deleteConcept', IsAuthenticated ,async function(req,res){
+  if(typeof(req.body.id) !== 'string' || req.body.id == '' || req.body.id == null){
+    res.status(401).end()
+    return false
+  }
+
+  let id = req.body.id
+  await Conceptos.deleteOne({_id:ObjectId(id)})
+  console.log('Se eliminó correctamente...')
+  res.status(200).end()
+})//end
+
+router.post('/updateConcept', IsAuthenticated ,async function(req,res){
+  if(typeof(req.body.id) !== 'string' || req.body.id == '' || req.body.id == null){
+    res.status(401).end()
+    return false
+  }
+  let valoracion;
+  let id = req.body.id
+  //console.log(id)
+  let result = await Conceptos.where({active:true, _id:ObjectId(id)})
+  if(result[0].positivo === true){
+    valoracion = 'Positiva'
+  }else{
+    valoracion = 'Negativa'
+  }
+  let obj = {
+    tipo:result[0].tipo,
+    positivo:valoracion,
+    concepto:result[0].concepto,
+  }
+  //console.log(obj)
+  res.status(200).json(obj)
+})//end
+
+router.get('/grupos', IsAuthenticated ,async function(req,res){
+  let grupos =await Grupos.where({})
+
+  
+  res.status(200).json(grupos)
+})//end
+
+router.get('/observaciones', IsAuthenticated ,function(req,res){
+  res.status(200).render('../views/observaciones',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
+})//end
+
+router.get('/api-alumnos', IsAuthenticated ,async function(req,res){
+
+  let result = await Alumnos.where({active:true})
+ 
+  let dato = {data:result}
+  res.status(200).json(dato)
+})//end
+
+router.post('/addComment', IsAuthenticated ,async function(req,res){
+  let id = req.body.id
+  let comentario = req.body.comentario
+  let cuatrimestre = req.body.cuatrimestre
+
+  //Controla que no haya duplicado
+  let result = await Observaciones.where({id_alumno:ObjectId(id)})
+  if(result.length !== 0){
+    res.status(401).end()
+    return false
+  }
+
+  let data = new Observaciones()
+  data.id_alumno = ObjectId(id)
+  data.observacion = comentario
+  data.cuatrimestre = cuatrimestre
+  data.save(function(err){
+    if (err) throw err;
+    res.status(200).end()
+  })
+})//end
+
 
 
 
 
 //Pdf
-router.post('/descarga',async function(req, res){
+router.post('/descarga', IsAuthenticated ,async function(req, res){
   let id_alumno = req.body.id_alumno
   let curso = req.body.curso
   let cuatrimestre = req.body.cuatrimestre
@@ -585,7 +686,7 @@ globalname = nameDocument
 res.status(200).json({status:true})
 })//end get
 
-router.get('/verinforme', function(req,res){
+router.get('/verinforme', IsAuthenticated ,function(req,res){
   //console.log(globalname)
   var data =fs.readFileSync(path.join(__dirname, '../pdf', String(globalname))); 
   res.contentType("application/pdf"); 
