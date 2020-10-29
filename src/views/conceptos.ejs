@@ -61,7 +61,7 @@
 
 <br><br>
 
-<!-- Modal -->
+<!-- Modal crear-->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -79,7 +79,7 @@
           </select>
           <br><br>
 
-          <input type="text" class="form-control mt-4" id="txtInput"  placeholder="Definir Grupo">
+          <input autocomplete="oof" type="text" class="form-control mt-4" id="txtInput"  placeholder="Definir Grupo">
           
           <br><br>
           <label for="select2">VALORACIÓN</label>
@@ -94,6 +94,46 @@
       </div>
       <div class="modal-footer">
         <button id="btnGuardar" type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal editar-->
+<div class="modal fade" id="myModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">EDITAR CONCEPTO</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body d-flex justify-content-center" id="content_modal">
+        <div class="form-group" style="text-align: center; width: 50%;">
+          <label for="select1">GRUPO</label>
+          <select id="idSelectGrupo2" class="custom-select">
+            
+          </select>
+          <br><br>
+
+          <input autocomplete="off" type="text" class="form-control mt-4" id="txtInput2"  placeholder="Definir Grupo">
+          
+          <br><br>
+          <label for="select2">VALORACIÓN</label>
+          <select id="idSelectValoracion2" class="custom-select">
+            <option value="">Seleccionar...</option>
+            <option value="">Positiva</option>
+            <option value="">Negativa</option>
+          </select> 
+        </div>
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button id="btnActualizar" type="button" class="btn btn-primary">Actualizar</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         
       </div>
@@ -124,8 +164,12 @@ let btnCrear = document.getElementById('btnCrear')
 let selectGrupo = document.getElementById('idSelectGrupo')
 let txtInput = document.getElementById('txtInput')
 let selectVal = document.getElementById('idSelectValoracion')
+let selectGrupo2 = document.getElementById('idSelectGrupo2')
+let txtInput2 = document.getElementById('txtInput2')
+let selectVal2 = document.getElementById('idSelectValoracion2')
 let btnGuardar = document.getElementById('btnGuardar')
 let tituloModal = document.getElementById('exampleModalLabel')
+let btnActualizar = document.getElementById('btnActualizar')
 
 
 window.onload = () =>{
@@ -134,11 +178,8 @@ window.onload = () =>{
     url:'/grupos',
     //data:{}
     }).done(async function(res){
-          limpiar()
-          $('#idSelectGrupo').append(`<option>Seleccionar...</option>`)
-          $.each(res,function(key,val){
-            $('#idSelectGrupo').append(`<option>${val.name}</option>`)
-          })//end each
+          cargarCombo1(res)
+          cargarCombo2(res)
     }).fail(async function(err){
       toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
       await sleep(2000)
@@ -179,21 +220,21 @@ $('#example tbody').on( 'click', '.fa-trash', function () {
     //alert(id)
 })
 
-
+//Selecciona elementos tabla editar
 $('#example tbody').on( 'click', '.fa-edit', function () {
     id = $(this).parents("tr").find("td").eq(0).text()
     
-
     $.ajax({
     type:'POST',
-    url:'/updateConcept',
+    url:'/searchConcept',
     data:{id}
     }).done(async function(res){
-          tituloModal.innerHTML = 'EDITAR CONCEPTO'
-          $('#myModal').modal('show')
-          //$('#idSelectGrupo').append(`<option>${res.tipo}</option>`)
-          //$('#idSelectValoracion').append(`<option>${res.valoracion}</option>`)
-          txtInput.value = res.concepto
+      
+      selectGrupo2.options[0].text = res.tipo
+      selectVal2.options[0].text = res.positivo
+      $('#txtInput2').val(res.concepto)
+      $('#myModal2').modal('show')
+          
     }).fail(async function(err){
       if(err === '401'){
         toastr.error('Elemento Duplicado...', 'ERROR', { timeOut: 3000 })
@@ -224,7 +265,25 @@ btnGuardar.onclick = ()=>{
   let positivo = selectVal.options[selectVal.selectedIndex].text
   let concepto = txtInput.value
 
+
   Obj.ajaxConfigMsg('POST','/addconcept',{concepto,positivo,tipo}, 'SE AGREGÓ CORRECTAMENTE',
+      [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
+      {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}],'#myModal')
+
+}//end  
+
+
+btnActualizar.onclick = ()=>{
+  if ($("#idSelectGrupo2 option:selected").val() == 'Seleccionar...') {alert('ERROR: DEBE SELECCIONAR UN GRUPO...'); return false}
+  if (selectVal2.options[selectVal2.selectedIndex].text == 'Seleccionar...') {alert('ERROR: DEBE SELECCIONAR UNA VALORACIÓN...'); return false}
+  if(txtInput2.value === ''){alert('ERROR: EL CAMPO ESTÁ VACIO...'); return false}
+
+  let tipo = $("#idSelectGrupo2 option:selected").val()
+  let positivo = selectVal2.options[selectVal2.selectedIndex].text
+  let concepto = txtInput2.value
+
+  //alert(concepto)
+  Obj.ajaxConfigMsg('POST','/updateConcept',{id,concepto,positivo,tipo}, 'SE ACTUALIZÓ CORRECTAMENTE',
       [{code:401, msg:'ERROR ON SERVER: TIPO DE DATO INCORRECTO...'},
       {code:402, msg:'ERROR ON SERVER: NO SE ENCONTRÓ ELEMENTO SELECCIONADO...'}],'#myModal')
 
@@ -239,6 +298,30 @@ const limpiar = () => {
     $select.remove(i);
   }
   //$select.innerHTML =  '<option selected disabled></option>'
+}
+
+const limpiar2 = () => {
+  const $select = document.querySelector("#idSelectGrupo2");
+  for (let i = $select.options.length; i >= 0; i--) {
+    $select.remove(i);
+  }
+  //$select.innerHTML =  '<option selected disabled></option>'
+}
+
+const cargarCombo1 = (respuesta) =>{
+  limpiar()
+  $('#idSelectGrupo').append(`<option>Seleccionar...</option>`)
+  $.each(respuesta,function(key,val){
+    $('#idSelectGrupo').append(`<option>${val.name}</option>`)
+  })//end each
+}
+
+const cargarCombo2 = (respuesta) =>{
+  limpiar2()
+  $('#idSelectGrupo2').append(`<option>Seleccionar...</option>`)
+  $.each(respuesta,function(key,val){
+    $('#idSelectGrupo2').append(`<option>${val.name}</option>`)
+  })//end each
 }
 
 

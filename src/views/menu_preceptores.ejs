@@ -178,7 +178,7 @@ $('body').on( 'click', '.ico2', function () {
           if(res.status === true){
             toastr.success('El Informe Se Generó Correctamente...', 'OK', { timeOut: 3000 })
             ver.innerHTML = ''
-            ver.innerHTML = "<button onclick=Ver() class='btn btn-primary ico2'>Ver</button>"
+            ver.innerHTML = "<button onclick=Ver() class='btn btn-primary ico2' data-toggle='tooltip' data-placement='top' title='Descargar'><i class='fas fa-file-download fa-2x'></i></button>"
           }
     }).fail(async function(err){
       toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 2000 })

@@ -132,20 +132,9 @@ $('#example tbody').on( 'click', '.fa-plus-circle', function () {
 btnGuardar.onclick = () => {
   let comentario = txtArea.value
 
-  /*$.ajax({
-    type:'POST',
-    url:'/',
-    data:{id,comentario}
-    }).done(async function(res){
-          
-    }).fail(async function(err){
-      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
-      await sleep(2000)
-      //window.location.reload()
-    })*/
   Obj.ajaxConfigMsg('POST','/addComment',{id,comentario,cuatrimestre:queCuatrimestreEs()},
-'SE CARGÓ CORRECTAMENTE',[{code:401, msg:'ERROR ON SERVER: DATO DUPLICADO...'},
-{code:402, msg:'ERROR ON SERVER: INFORME CONCEPTUAL DUPLICADO...'}],'#myModal')
+    'SE CARGÓ CORRECTAMENTE',[{code:401, msg:'ERROR ON SERVER: DATO DUPLICADO...'},
+    {code:402, msg:'ERROR ON SERVER: INFORME CONCEPTUAL DUPLICADO...'}],'#myModal')
 
 }//end  
 

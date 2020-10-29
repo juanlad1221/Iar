@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background:#3F51B5 !important;height:10% !important">
   <img src="/img/logo.png" alt="" class="ml-4"  width="3%">
   
-  <a class="navbar-brand" href="#" style="color:white;margin-left: 2%;font-size: 20px;">SGIC</a>
+  <a class="navbar-brand" href="#" style="color:white;margin-left: 2%;font-size: 20px;">MINS</a>
   <!--<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>-->
@@ -45,7 +45,7 @@
            style="width:25%;">
       <%}%>
          <h3 style="color:grey" class="font-2 mt-3"></h3>
-         <a href="">SGIC 2.1.1</a>
+         <a href="">MINS 2.1.1</a>
     </div>
          
     
@@ -55,14 +55,12 @@
         <a id="link_home" href="/home" class="link" style="text-decoration: none;">HOME</a>
       </li>
       <%if(tipo == 'profe'){%>
-      <li>
-        <div class="link">INFORMES<i class="fa fa-chevron-down"></i></div>
-        <ul class="submenu">
-          <li><a href="/estadisticas">Estadísticas</a></li>
-          <li><a href="/editarInformes">Editar Informes</a></li>
-          <!--<li><a href="/altaBajaLista">Alta/Baja Lista</a></li>-->
-        </ul>
-      </li>
+        <li>
+          <a id="link_home" href="/estadisticas" class="link" style="text-decoration: none;">ESTADÍSTICA</a>
+        </li>
+        <li>
+          <a id="link_home" href="/editarInformes" class="link" style="text-decoration: none;">EDITAR INFORMES</a>
+        </li>
       <%}%>
 
       <%if(tipo == 'psico'){%>

@@ -290,12 +290,7 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
   res.status(200).json(arr)
 })//end get
 
-/*router.post('/observaciones', IsAuthenticated ,async function(req,res){
-  let idAlumno = req.body.id
-  let obs =await Observaciones.where({id_alumno:ObjectId(idAlumno)})
 
-  console.log(obs)
-})//end*/
 
 
 //Preceptores
@@ -488,14 +483,10 @@ router.delete('/deleteConcept', IsAuthenticated ,async function(req,res){
   res.status(200).end()
 })//end
 
-router.post('/updateConcept', IsAuthenticated ,async function(req,res){
-  if(typeof(req.body.id) !== 'string' || req.body.id == '' || req.body.id == null){
-    res.status(401).end()
-    return false
-  }
+router.post('/searchConcept', async function(req, res){
   let valoracion;
   let id = req.body.id
-  //console.log(id)
+  
   let result = await Conceptos.where({active:true, _id:ObjectId(id)})
   if(result[0].positivo === true){
     valoracion = 'Positiva'
@@ -507,8 +498,25 @@ router.post('/updateConcept', IsAuthenticated ,async function(req,res){
     positivo:valoracion,
     concepto:result[0].concepto,
   }
-  //console.log(obj)
   res.status(200).json(obj)
+})//end
+
+router.post('/updateConcept', IsAuthenticated ,async function(req,res){
+  if(typeof(req.body.id) !== 'string' || req.body.id == '' || req.body.id == null){
+    res.status(401).end()
+    return false
+  }
+ 
+  if(req.body.positivo === 'Positiva'){
+    positivo = true
+  }
+  if(req.body.positivo === 'Negativa'){
+    positivo = false
+  }
+
+  let t = await Conceptos.findByIdAndUpdate(ObjectId(req.body.id),{tipo:req.body.tipo,
+  positivo:positivo, concepto:req.body.concepto})
+  res.status(200).end()
 })//end
 
 router.get('/grupos', IsAuthenticated ,async function(req,res){
@@ -568,7 +576,8 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   let materias = await Materias.where({cursos:curso}).sort({materia:1})
   //Obtengo los conceptos del alumno
   let conceptos_guardados = await Alumnos_Conceptos.where({id_alumno:ObjectId(id_alumno)})
-
+  //Obtengo la observacion
+  let obs = await Observaciones.where({id_alumno:ObjectId(id_alumno), cuatrimestre:cuatrimestre})
   
   //Creo variables con datos del alumno, se asignan mas abajo.
   let alumno = 'Alumno: ' +  conceptos_guardados[0].last_name + ' ' +  conceptos_guardados[0].name
@@ -577,7 +586,13 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   let el_curso = 'Curso: ' +  conceptos_guardados[0].curso
   let f = new Date()
   let fecha = 'Fecha: ' + f.getDate() + "/"+ (f.getMonth() + 1)+ "/" +f.getFullYear()
-  let observacion = 'OBSERVACIÓN:............................................................................................................................................'
+  observacion = 'OBSERVACIÓN: ...........................................................................................................................................'
+  
+  if(obs.length !== 0){
+    observacion = 'OBSERVACIÓN: ' + obs[0].observacion
+  }
+  
+  
 
   //Creo cabecera
   let ArrCabesera =[{text:'MATERIA',alignment: 'center',style:'header3'}, {text:'DESEMPEÑO SOCIO-CONDUCTUAL', alignment: 'center',style:'header3'}, {text:'DESEMPEÑO SINCRÓNICO  (video clases)',alignment: 'center',style:'header3'},{text:'   DESEMPEÑO ASONCRÓNICO                     (e-school)',alignment: 'center',style:'header3'}]
@@ -599,7 +614,7 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
     }
   })
   
-  //console.log(arr)
+  
   //Asigno el array a variable que mas abajo va en el cuerpo de la tabla
   let body_ = arr
   
@@ -687,11 +702,8 @@ res.status(200).json({status:true})
 })//end get
 
 router.get('/verinforme', IsAuthenticated ,function(req,res){
-  //console.log(globalname)
-  var data =fs.readFileSync(path.join(__dirname, '../pdf', String(globalname))); 
-  res.contentType("application/pdf"); 
-  res.send(data); 
-})
+  res.download(path.join(__dirname, '../pdf', String(globalname)))
+})//end
 
 
 
@@ -741,9 +753,6 @@ router.get('/cargarUsuario', async  (req, res) => {
   
   //await User.updateOne({active:true, _id:ObjectId('5f3a7d89a3586b0e5438c594')},{$push: {cursos: {curso:'3A'}} })
 })//end get
-
-
-
 
 
 
