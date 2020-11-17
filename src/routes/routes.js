@@ -702,6 +702,7 @@ res.status(200).json({status:true})
 })//end get
 
 router.get('/verinforme', IsAuthenticated ,function(req,res){
+console.log(path.join(__dirname, '../pdf', String(globalname)))
   res.download(path.join(__dirname, '../pdf', String(globalname)))
 })//end
 
