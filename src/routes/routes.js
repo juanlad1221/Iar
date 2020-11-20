@@ -483,7 +483,7 @@ router.delete('/deleteConcept', IsAuthenticated ,async function(req,res){
   res.status(200).end()
 })//end
 
-router.post('/searchConcept', async function(req, res){
+router.post('/searchConcept', IsAuthenticated,async function(req, res){
   let valoracion;
   let id = req.body.id
   
