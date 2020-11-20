@@ -631,14 +631,6 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   res.status(200).json({status:true, materias, conceptos_guardados, obs, cuatrimestre, nombreAlumno})
 })//end get
 
-<<<<<<< HEAD
-
-=======
-router.get('/verinforme', IsAuthenticated ,function(req,res){
-console.log(path.join(__dirname, '../pdf', String(globalname)))
-  res.download(path.join(__dirname, '../pdf', String(globalname)))
-})//end
->>>>>>> de96085cac479facfe258aa2bc7167bbc13afc3d
 
 
 
