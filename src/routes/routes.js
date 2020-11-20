@@ -655,16 +655,16 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 router.get('/cargarUsuario', async  (req, res) => {
   let user = await new User()
-  user.username = 'natalia'
-  user.password = bcrypt.hashSync('123', 10)
-  user.show_name = 'Holm Natalia'
-  user.sexo = 'f'
-  user.tipo = 'psico'
+  user.username = 'guillermo'
+  user.password = bcrypt.hashSync('12xp', 10)
+  user.show_name = 'Cabral Guillermo'
+  user.sexo = 'm'
+  user.tipo = 'profe'
   user.active = true;
   user.cursos.push(
-  /*{curso:'4H', materia:''},
-  {curso:'4CN', materia:''},
-  {curso:'3CN', materia:'Biblia'},
+  {curso:'4H', materia:'Tecnología'},
+  {curso:'4CN', materia:'Tecnología'},
+  /*{curso:'3CN', materia:'Biblia'},
   {curso:'2A', materia:'Inglés'},
   {curso:'1A', materia:'Inglés'},
   {curso:'2B', materia:'Inglés'},
@@ -682,7 +682,13 @@ router.get('/cargarUsuario', async  (req, res) => {
 })//end get
 
 
+router.get('/editarclave', async  (req, res) => {
+  let id = '5f785fe24ac16b1608ecab27'
 
+  let newpass =  bcrypt.hashSync('ros22', 10)  //users[0].password
+  await User.updateOne({active:true, _id:ObjectId(id)},{$set: {password:newpass }})
+  res.status(200).send('ok...')
+})
 
 
 
