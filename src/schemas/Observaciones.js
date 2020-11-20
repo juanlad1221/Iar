@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const Observaciones_schema = Schema({
     id_alumno:      {type:Object, requerid:true},
-    cuatrimestre:   {type:String, requerid:true},
+    //cuatrimestre:   {type:String, requerid:true},
     observacion:    {type:String}
 })
 
