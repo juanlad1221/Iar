@@ -619,6 +619,9 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   let curso = req.body.curso
   let cuatrimestre = req.body.cuatrimestre
   
+  //Obtengo los datos del alumno
+  let alumno = await Alumnos.where({active:true, _id:ObjectId(id_alumno)})
+  
   //Obtengo las materias del curso
   let materias = await Materias.where({cursos:curso}).sort({materia:1})
   //Obtengo los conceptos del alumno
@@ -690,8 +693,13 @@ router.get('/editarclave', async  (req, res) => {
   res.status(200).send('ok...')
 })
 
+router.get('/dni', async  (req, res) => {
+  //let todos = await Alumnos.where({curso:'1A', active:true})
+  await Alumnos.updateMany({active:true},{$set: {dni:'' }})
 
 
+  res.send('okk')
+})
 
 
 
