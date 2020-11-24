@@ -57,13 +57,8 @@ router.get('/home',IsAuthenticated ,async function (req, res) {
     res.redirect('/profes')
   }
   if(req.user.tipo == 'precep'){
-    let result = await User.where({_id:ObjectId(req.user.id), active:true})
-    if(Tools.Obj.findValueInObjectArray(result[0].cursos, '5H') || Tools.Obj.findValueInObjectArray(result[0].cursos, '5CN')){
-      res.redirect('/logout')
-    }else{
-      res.redirect('/preceptores')
-    }
-    //res.redirect('/preceptores')
+    
+    res.redirect('/preceptores')
   }
   if(req.user.tipo == 'psico'){
    
@@ -140,10 +135,10 @@ router.get('/cursosAsignados', IsAuthenticated ,async function(req,res){
   let arr = []
   cursos_asignados[0].cursos.forEach(e => {
     
-    if(e.curso != '5CN' && e.curso != '5H'){
+    //if(e.curso != '5CN' && e.curso != '5H'){
       arr.push(e)
       //console.log(e.curso)
-    }
+    //}
   })//end
   
   res.status(200).json(arr)
@@ -286,9 +281,9 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
 
   let arr2 = []
   cursos_asignados[0].cursos.forEach(e => {
-    if(e.curso !== '5H' && e.curso !== '5CN'){
+    //if(e.curso !== '5H' && e.curso !== '5CN'){
       arr2.push(e)
-    }
+    //}
   })//end
 
 
@@ -298,7 +293,7 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
     let total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, e.curso, e.id_materia))
 
     let total = Number(ExtrarCantAlumnosSegunCurso(alumnos, e.curso))
-    console.log(total_materia)
+    //.log(total_materia)
     if(total_materia === 'NaN'){
       total_materia = 0
     }
