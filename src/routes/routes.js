@@ -298,7 +298,7 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
     let total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, e.curso, e.id_materia))
 
     let total = Number(ExtrarCantAlumnosSegunCurso(alumnos, e.curso))
-
+    console.log(total_materia)
     if(total_materia === 'NaN'){
       total_materia = 0
     }
@@ -306,28 +306,11 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
       total = 0
     }
 
+   
     let porcentaje = Math.round((total_materia * 100)/ total) + '%'
     arr.push({name: e.curso +' '+e.materia, porcentaje:porcentaje})
   })//end for
 
-  /*cursos_asignados[0].cursos.forEach(e => {
-    
-    let total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, '2', e.curso, e.id_materia))
-
-    let total = Number(ExtrarCantAlumnosSegunCurso(alumnos, e.curso))
-
-    if(total_materia === 'NaN'){
-      total_materia = 0
-    }
-    if(total === 'NaN'){
-      total = 0
-    }
-
-    let porcentaje = Math.round((total_materia * 100)/ total) + '%'
-    arr.push({name: e.curso +' '+e.materia, porcentaje:porcentaje})
-  })//end for*/
-  
-  
   res.status(200).json(arr)
 })//end get
 
@@ -800,7 +783,7 @@ function ExtraerConceptosSegunMateria(array2, valor, id_materia){
     
   array2.forEach( f => {
       
-    if(String(idmateria) === String(f.id_materia) && String(cuatrimestre) === String(f.cuatrimestre) ){
+    if(String(idmateria) === String(f.id_materia)){
   
       arr.push({text:f.materia,alignment: 'center'}, {text:f.conceptos[0].nombre,alignment: 'center'}, {text:f.conceptos[1].nombre,alignment: 'center'}, {text:f.conceptos[2].nombre,alignment: 'center'})
     }//end if
@@ -809,15 +792,15 @@ function ExtraerConceptosSegunMateria(array2, valor, id_materia){
   return arr
 }//end fun
 
-function ExtraerCantAlumnosSegunCursoYMateria(array_cursos, cuatrimestre_, curso_, idMateria){
-  let cuatrimestre = cuatrimestre_
+function ExtraerCantAlumnosSegunCursoYMateria(array_cursos, curso_, idMateria){
+  //let cuatrimestre = cuatrimestre_
   let id_materia = idMateria
   let curso = curso_
   let c = 0
 
   array_cursos.forEach( e => {
 
-    if(e.cuatrimestre === cuatrimestre && e.curso === curso && String(e.id_materia) === String(id_materia)){
+    if(e.curso === curso && String(e.id_materia) === String(id_materia)){
       c++
     }
 
