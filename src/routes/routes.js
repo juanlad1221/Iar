@@ -57,8 +57,13 @@ router.get('/home',IsAuthenticated ,async function (req, res) {
     res.redirect('/profes')
   }
   if(req.user.tipo == 'precep'){
-    
-    res.redirect('/preceptores')
+    let result = await User.where({_id:ObjectId(req.user.id), active:true})
+    if(Tools.Obj.findValueInObjectArray(result[0].cursos, '5H') || Tools.Obj.findValueInObjectArray(result[0].cursos, '5CN')){
+      res.redirect('/logout')
+    }else{
+      res.redirect('/preceptores')
+    }
+    //res.redirect('/preceptores')
   }
   if(req.user.tipo == 'psico'){
    
@@ -132,7 +137,16 @@ router.post('/alumnos', IsAuthenticated ,async function (req, res) {
 router.get('/cursosAsignados', IsAuthenticated ,async function(req,res){
   let cursos_asignados = await User.where({active:true, _id:ObjectId(req.user.id)})
   
-  res.status(200).json(cursos_asignados[0].cursos)
+  let arr = []
+  cursos_asignados[0].cursos.forEach(e => {
+    
+    if(e.curso != '5CN' && e.curso != '5H'){
+      arr.push(e)
+      //console.log(e.curso)
+    }
+  })//end
+  
+  res.status(200).json(arr)
 })//end get
 
 router.post('/datosModal', IsAuthenticated ,async function(req, res){
@@ -269,7 +283,34 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
   let conceptos = await Alumnos_Conceptos.where({})  
   let alumnos = await Alumnos.where({})
 
+
+  let arr2 = []
   cursos_asignados[0].cursos.forEach(e => {
+    if(e.curso !== '5H' && e.curso !== '5CN'){
+      arr2.push(e)
+    }
+  })//end
+
+
+  
+  arr2.forEach(e => {
+    
+    let total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, e.curso, e.id_materia))
+
+    let total = Number(ExtrarCantAlumnosSegunCurso(alumnos, e.curso))
+
+    if(total_materia === 'NaN'){
+      total_materia = 0
+    }
+    if(total === 'NaN'){
+      total = 0
+    }
+
+    let porcentaje = Math.round((total_materia * 100)/ total) + '%'
+    arr.push({name: e.curso +' '+e.materia, porcentaje:porcentaje})
+  })//end for
+
+  /*cursos_asignados[0].cursos.forEach(e => {
     
     let total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, '2', e.curso, e.id_materia))
 
@@ -284,7 +325,7 @@ router.get('/estadisticasprofes', IsAuthenticated ,async function(req,res){
 
     let porcentaje = Math.round((total_materia * 100)/ total) + '%'
     arr.push({name: e.curso +' '+e.materia, porcentaje:porcentaje})
-  })//end for
+  })//end for*/
   
   
   res.status(200).json(arr)
