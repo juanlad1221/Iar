@@ -418,7 +418,7 @@ router.post('/estadisticaspsico', IsAuthenticated ,async function(req,res){
     
     e.cursos.forEach(f => {
 
-      total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, cuatrimestre, String(f), e._id))
+      total_materia = Number(ExtraerCantAlumnosSegunCursoYMateria(conceptos, String(f), e._id))
 
       let total = Number(ExtrarCantAlumnosSegunCurso(alumnos, String(f)))
 
@@ -427,7 +427,7 @@ router.post('/estadisticaspsico', IsAuthenticated ,async function(req,res){
     })//end for
   })//end for
   
-  //console.log(arr)
+  
   res.status(200).json(arr)
 })//end get
 
