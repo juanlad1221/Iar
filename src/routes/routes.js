@@ -381,7 +381,7 @@ router.post('/consultar', IsAuthenticated ,async function(req,res){
   let id_alumno = req.body.id_alumno
   let cuatrimestre = req.body.cuatrimestre
   
-  let conceptos = await Alumnos_Conceptos.where({id_alumno:ObjectId(id_alumno), cuatrimestre:cuatrimestre})
+  let conceptos = await Alumnos_Conceptos.where({id_alumno:ObjectId(id_alumno)})
 
   if(conceptos.length === 0){
     res.status(200).json({generar:false})
@@ -389,7 +389,6 @@ router.post('/consultar', IsAuthenticated ,async function(req,res){
   }
 
   let materias_por_curso = await Materias.where({cursos:conceptos[0].curso})
-  
   
 
   if(Tools.Obj.twoObjectArrayAreEqual(conceptos, materias_por_curso)){
@@ -647,10 +646,12 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   let conceptos_guardados = await Alumnos_Conceptos.where({id_alumno:ObjectId(id_alumno)})
   //Obtengo la observacion
   let obs = await Observaciones.where({id_alumno:ObjectId(id_alumno), cuatrimestre:cuatrimestre})
-  
+  //Formo el nombre del alumno para enviar
   let nombreAlumno = conceptos_guardados[0].last_name + ' ' +  conceptos_guardados[0].name
-  
-  res.status(200).json({status:true, materias, conceptos_guardados, obs, cuatrimestre, nombreAlumno})
+  //Extraigo el dni para enviar
+  let dni = alumno[0].dni
+
+  res.status(200).json({status:true, materias, conceptos_guardados, obs, cuatrimestre, nombreAlumno, dni})
 })//end get
 
 
