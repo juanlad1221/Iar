@@ -35,6 +35,12 @@
           <img id="conceptos" src="/img/Group 15.png" alt="" style="width: 30%; height: auto;">
           <P class="mt-2">CONCEPTOS</P>
       </div>
+
+      <div class="col-sm-4 mt-4" style="display: flex; flex-direction: column;
+      align-items: center; justify-content: center;">
+          <img id="info" src="/img/iconinfo.png" alt="" style="width: 30%; height: auto;">
+          <P class="mt-2">INFO ALUMNOS</P>
+      </div>
   </div>
 
 
@@ -55,6 +61,7 @@ img{cursor:pointer;}
 let btnestadisticas = document.getElementById('estadisticas')
 let btnobsrvaciones = document.getElementById('observaciones')
 let btnconceptos = document.getElementById('conceptos')
+let btnInfo = document.getElementById('info')
 
 //Envia al usuario a pagina obs
 btnobsrvaciones.onclick = () => {
@@ -69,6 +76,10 @@ btnestadisticas.onclick = () => {
 
 btnconceptos.onclick = () => {
   window.location = '/conceptospsico'
+}//end btn
+
+btnInfo.onclick = () => {
+  window.location = '/infoalumnos'
 }//end btn
 
  

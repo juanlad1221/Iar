@@ -1,0 +1,168 @@
+<%- include('block_inicio') %>
+<%- include('barra_menu') %>
+<div class="container">
+    
+  <!--Mobile first-->
+  <div class="d-block d-sm-none">
+    <br>
+    <div class="row d-flex justify-content-center" >
+      <h4>EDITAR CONCEPTOS</h4>
+    </div>
+    <br>
+
+  </div>
+
+
+
+  <!--Resto dispositivos-->
+  <div class="row d-none d-sm-block">
+      <br><br>
+    <div class="row d-flex justify-content-center" >
+      <h2>INFO ALUMNOS</h2>
+    </div>
+    <br><br><br>
+
+   
+    <div class="d-flex justify-content-center">
+      
+      <div class="mt-2" style="width: 100%;">
+        <table id="example" class="table table-bordered" style="text-align: center; 
+        background: rgb(209, 207, 207);">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>APELLIDO</th>
+                  <th>NOMBRE</th>
+                  <th>DNI</th>
+                  <th>CURSO</th>
+                  <th>MATERIA</th>
+                  <th>ACCIÓN</th>
+              </tr>
+          </thead>
+          <tbody>
+          </tbody>
+      </table>
+  
+      </div>
+    </div>
+
+
+</div>
+
+<br><br>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">CONCEPTOS CARGADOS</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="content_modal">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('block_end') %>
+
+
+<style>
+img{cursor:pointer;}
+
+.cursor{
+    cursor: pointer;
+  }
+.fa-search:hover{
+    color: rgb(75, 129, 211);
+}
+
+
+
+</style>
+
+<script>
+
+
+
+
+//Muestra la tabla
+$('#example').DataTable({
+    ajax: "/getAlumnos",
+    language: {url: "//cdn.datatables.net/plug-ins/1.10.20/i18n/Spanish.json"},
+    order: [[ 4, "asc" ]],
+    columns: [
+            { "data": "id" },
+            { "data": "last_name" },
+            { "data": "name" },
+            { "data": "dni" },
+            { "data": "curso" },
+            { "data": "materia" },
+            {
+            "defaultContent": "<div class='d-flex justify-content-center'> <i data-toggle='tooltip' data-placement='top' title='Ver' class='cursor fas fa-search fa-lg icon'></div>"
+            }
+            ],
+})//end tabla
+
+ 
+ //Selecciona elementos en tabla Borrar
+$('#example tbody').on( 'click', '.fa-search', function () {
+    $('#content_modal').html('')
+    let id = $(this).parents("tr").find("td").eq(0).text()
+    let materia = $(this).parents("tr").find("td").eq(5).text()
+
+   
+    $.ajax({
+    type:'POST',
+    url:'/getObs2',
+    data:{id, materia}
+    }).done(async function(res){
+      
+      $.each(res,function(key,val){
+        
+        $('#content_modal').append(`<div>
+         <h5 style="color:#179AF5">${ val.tipo}</h5>
+         <ul>
+           <li style="font-size: 17px;">concepto: ${ val.nombre}</li>
+           <li>valoracion: ${Valoracion(val.positivo)}</li>
+         </ul>
+       </div>
+       <br>`)
+      })
+      
+    }).fail(async function(err){
+      toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
+      await sleep(2000)
+      window.location.reload()
+    })
+
+    $('#myModal').modal('show')
+    
+})
+
+//Selecciona elementos tabla editar
+
+
+
+function Valoracion(val){
+  if(val === true){
+    return 'Positiva'
+  }
+  if(val === false){
+    return 'Positiva'
+  }
+  return 'sin datos'
+}
+
+
+
+
+
+  
+</script>

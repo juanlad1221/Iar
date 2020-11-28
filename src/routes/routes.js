@@ -150,7 +150,7 @@ router.post('/datosModal', IsAuthenticated ,async function(req, res){
   let id = req.body.id
   let result = await Alumnos_Conceptos.where({_id:ObjectId(id)})
 
-  //console.log(result[0].conceptos[1].p)
+  console.log(id)
   
   if(result[0].conceptos[0].positivo == true){
     valoracion = 'Valoración Positiva' 
@@ -630,6 +630,58 @@ router.put('/editObs',IsAuthenticated,async (req,res) => {
   res.status(200).end()
 })//end
 
+router.get('/infoalumnos', async (req, res) => {
+  res.status(200).render('../views/infoAlumnos',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
+})//end
+
+router.get('/getAlumnos', async (req, res) => {
+  let result = await Alumnos.where({active:true})
+  let materias = await Materias.where({})
+  let arr = []
+
+  let materias_del_curso = ExtraerMateriasSegunCurso(materias, result[0].curso)
+  
+  result.forEach(e => {
+   
+    materias_del_curso.forEach(f =>{
+      obj = {
+        id:e._id,
+        last_name:e.last_name,
+        name:e.name,
+        dni:e.dni,
+        curso:e.curso,
+        materia:f
+      }
+      arr.push(obj)
+    })//end
+  })//end
+  
+  let dato = {data:arr}
+  res.status(200).json(dato)
+})//end
+
+router.post('/getObs2',IsAuthenticated,async (req,res) => {
+  let id_alumno = req.body.id
+  let materia = req.body.materia
+  let data;
+  let arr = []
+
+  let id_materia = await Materias.where({materia:materia})
+  let obs = await Alumnos_Conceptos.where({id_alumno: ObjectId(id_alumno), id_materia:ObjectId(id_materia[0]._id)})
+  
+  
+  if(obs.length === 0){
+    arr.push({nombre:'sin datos', positivo:'sin datos', tipo:'Tipo: sin datos'})
+    data = arr
+  }else{
+    data = obs[0].conceptos
+  }
+
+
+
+  res.status(200).json(data)
+})//end
+
 
 //Pdf
 router.post('/descarga', IsAuthenticated ,async function(req, res){
@@ -678,24 +730,24 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 router.get('/cargarUsuario', async  (req, res) => {
   let user = await new User()
-  user.username = 'guillermo'
-  user.password = bcrypt.hashSync('12xp', 10)
-  user.show_name = 'Cabral Guillermo'
-  user.sexo = 'm'
-  user.tipo = 'profe'
+  user.username = 'maria'
+  user.password = bcrypt.hashSync('fox21', 10)
+  user.show_name = 'Maria'
+  user.sexo = 'f'
+  user.tipo = 'precep'
   user.active = true;
   user.cursos.push(
-  {curso:'4H', materia:'Tecnología'},
-  {curso:'4CN', materia:'Tecnología'},
-  /*{curso:'3CN', materia:'Biblia'},
-  {curso:'2A', materia:'Inglés'},
-  {curso:'1A', materia:'Inglés'},
-  {curso:'2B', materia:'Inglés'},
-  {curso:'1B', materia:'Inglés'},
-  {curso:'5H', materia:'Inglés'},
-  {curso:'4H', materia:'Inglés'},
-  {curso:'4CN', materia:'Inglés'},
-  {curso:'2A', materia:'Fisico-Quimica'},
+  {curso:'2A', materia:''},
+  {curso:'2B', materia:''},
+  /*{curso:'3CN', materia:'Ed. Física'},
+  {curso:'3H', materia:'Ed. Física'},
+  {curso:'1A', materia:'Ed. Física'},
+  {curso:'1B', materia:'Ed. Física'},
+  {curso:'2A', materia:'Ed. Física'},
+  {curso:'2B', materia:'Ed. Física'},
+  {curso:'5H', materia:'Ed. Física'},
+  {curso:'5CN', materia:'Ed. Física'},
+  /*{curso:'2A', materia:'Fisico-Quimica'},
   {curso:'4H', materia:'Quimica'}*/
   )
   user.save()
@@ -819,6 +871,16 @@ array_alumnos.forEach( e => {
 })//end for
 return c
 }//end funcion
+
+function ExtraerMateriasSegunCurso(array_materias, curso){
+  let arr = []
+  array_materias.forEach(e => {
+    if(e.cursos.includes(curso)){
+      arr.push(e.materia)
+    }
+  })//end
+  return arr
+}//end
 
 function UbicarEnY(total,porcentaje){
   return Math.round((porcentaje * total)/100)
