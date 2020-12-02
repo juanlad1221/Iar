@@ -41,6 +41,12 @@
           <img id="info" src="/img/iconinfo.png" alt="" style="width: 30%; height: auto;">
           <P class="mt-2">INFO ALUMNOS</P>
       </div>
+
+      <div class="col-sm-4 mt-4" style="display: flex; flex-direction: column;
+      align-items: center; justify-content: center;">
+          <img id="cNotas" src="/img/iconinfo.png" alt="" style="width: 30%; height: auto;">
+          <P class="mt-2">CARGAR NOTAS</P>
+      </div>
   </div>
 
 
@@ -62,6 +68,7 @@ let btnestadisticas = document.getElementById('estadisticas')
 let btnobsrvaciones = document.getElementById('observaciones')
 let btnconceptos = document.getElementById('conceptos')
 let btnInfo = document.getElementById('info')
+let btnNotas = document.getElementById('cNotas')
 
 //Envia al usuario a pagina obs
 btnobsrvaciones.onclick = () => {
@@ -80,6 +87,10 @@ btnconceptos.onclick = () => {
 
 btnInfo.onclick = () => {
   window.location = '/infoalumnos'
+}//end btn
+
+btnNotas.onclick = () => {
+  window.location = '/cargarnotas'
 }//end btn
 
  

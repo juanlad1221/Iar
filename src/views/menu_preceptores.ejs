@@ -230,7 +230,8 @@ function Doc(res){
   let ArrCabesera =[{text:'MATERIA',alignment: 'center',style:'header3'}, 
   {text:'DESEMPEÑO SOCIO-CONDUCTUAL', alignment: 'center',style:'header3'}, 
   {text:'DESEMPEÑO SINCRÓNICO  (video clases)',alignment: 'center',style:'header3'},
-  {text:'   DESEMPEÑO ASONCRÓNICO                     (e-school)',alignment: 'center',style:'header3'}]
+  {text:'   DESEMPEÑO ASONCRÓNICO                     (e-school)',alignment: 'center',style:'header3'},
+  {text:'NOTA',alignment: 'center',style:'header3'}]
  
   let arrtotal=[]
   //Meto la cabecera como primer elemento en array  
@@ -404,6 +405,7 @@ function Ver(docDefinition){
 //extrae conceptos del alumno segun la materia
 function ExtraerConceptosSegunMateria(array2, valor, id_materia){
   let arr = []
+  let nota = ''
   let cuatrimestre = valor
   let idmateria = id_materia
     
@@ -411,7 +413,15 @@ function ExtraerConceptosSegunMateria(array2, valor, id_materia){
       
     if(String(idmateria) === String(f.id_materia) && String(cuatrimestre) === String(f.cuatrimestre) ){
   
-      arr.push({text:f.materia,alignment: 'center'}, {text:f.conceptos[0].nombre,alignment: 'center'}, {text:f.conceptos[1].nombre,alignment: 'center'}, {text:f.conceptos[2].nombre,alignment: 'center'})
+      if(f.nota === ''){
+        nota = 'En Proceso'
+      }else{
+        nota = f.nota
+      }
+      
+      arr.push({text:f.materia,alignment: 'center'}, {text:f.conceptos[0].nombre,alignment: 'center'}, {text:f.conceptos[1].nombre,alignment: 'center'}, {text:f.conceptos[2].nombre,alignment: 'center'},{text:nota,alignment: 'center'})
+      
+      
     }//end if
   })//end for
     

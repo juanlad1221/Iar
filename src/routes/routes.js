@@ -131,16 +131,32 @@ router.post('/alumnos', IsAuthenticated ,async function (req, res) {
 
 router.get('/cursosAsignados', IsAuthenticated ,async function(req,res){
   let cursos_asignados = await User.where({active:true, _id:ObjectId(req.user.id)})
+  let materias = await Materias.where({})
   
   let arr = []
+  let obj = {}
   cursos_asignados[0].cursos.forEach(e => {
     
-    //if(e.curso != '5CN' && e.curso != '5H'){
-      arr.push(e)
-      //console.log(e.curso)
-    //}
+    
+   materias.forEach(f => {
+
+      if(e.materia === f.materia){
+        
+        obj = {
+          curso:e.curso,
+          materia:f.materia,
+          id_materia:f._id
+        }
+        
+        arr.push(obj)
+      
+      }
+
+    })
+
+    
   })//end
-  
+  //console.log(arr)
   res.status(200).json(arr)
 })//end get
 
@@ -202,11 +218,12 @@ router.post('/agregar', IsAuthenticated ,async function (req, res) {
   //Obtengo el usuario
   let usuario = req.user.id
   //Obtengo la materia
-  let materia = req.body.materia
+  //let materia = req.body.materia
   //Obtengo el cuatrimestre
   let cuatrimestre = req.body.cuatrimestre
   //Obtengo id_materia
   let id_materia = req.body.id_materia
+  
   
   //cuento el alumno que ingresa en la bd
   let cant_alumnos = await Alumnos_Conceptos.where({id_alumno:ObjectId(req.body.alumno),
@@ -215,6 +232,8 @@ router.post('/agregar', IsAuthenticated ,async function (req, res) {
   //Obtengo los datos del alumno
   let dato_alumno = await Alumnos.where({active:true, _id:ObjectId(req.body.alumno)})
   
+  let materia = await Materias.where({_id:ObjectId(id_materia)})
+  let materia_ = materia[0].materia
 
   //Obtengo el nombre del concepto
   let concepto1 = await Conceptos.where({active:true, _id:ObjectId(req.body.select1)})
@@ -241,9 +260,9 @@ router.post('/agregar', IsAuthenticated ,async function (req, res) {
     nuevo.curso = dato_alumno[0].curso
     nuevo.cuatrimestre = cuatrimestre
     nuevo.user = ObjectId(usuario)
-    nuevo.materia = materia
+    nuevo.materia = materia_
     nuevo.id_materia = ObjectId(id_materia)
-   
+    nuevo.nota = ''
     nuevo.conceptos = obj
     nuevo.save(function(err){
       if (err) throw err;
@@ -398,6 +417,7 @@ router.post('/consultar', IsAuthenticated ,async function(req,res){
     res.status(200).json({generar:false})
     return false
   }
+  res.status(200).json({generar:true})
 })//end
 
 
@@ -630,11 +650,40 @@ router.put('/editObs',IsAuthenticated,async (req,res) => {
   res.status(200).end()
 })//end
 
-router.get('/infoalumnos', async (req, res) => {
+router.get('/infoalumnos', IsAuthenticated,async (req, res) => {
   res.status(200).render('../views/infoAlumnos',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
 })//end
 
-router.get('/getAlumnos', async (req, res) => {
+router.get('/getAlumnos', IsAuthenticated,async (req, res) => {
+  let result = await Alumnos.where({active:true})
+  let materias = await Materias.where({})
+  let notas = await Alumnos_Conceptos.where({})
+  let arr = []
+
+  let materias_del_curso = ExtraerMateriasSegunCurso(materias, result[0].curso)
+  
+  result.forEach(e => {
+   
+    materias_del_curso.forEach(f =>{
+      obj = {
+        id:e._id,
+        last_name:e.last_name,
+        name:e.name,
+        dni:e.dni,
+        curso:e.curso,
+        materia:f,
+        
+      }
+      arr.push(obj)
+    })//end
+  })//end
+
+  
+  let dato = {data:arr}
+  res.status(200).json(dato)
+})//end
+
+router.get('/getAlumnos2', IsAuthenticated,async (req, res) => {
   let result = await Alumnos.where({active:true})
   let materias = await Materias.where({})
   let arr = []
@@ -656,8 +705,18 @@ router.get('/getAlumnos', async (req, res) => {
     })//end
   })//end
   
-  let dato = {data:arr}
-  res.status(200).json(dato)
+  
+  res.status(200).json(arr)
+})//end
+
+router.get('/getAlumnos3/:id',IsAuthenticated ,async (req, res) => {
+  let curso = req.params.id
+  let alumnos = await Alumnos_Conceptos.where({curso:curso})
+  //let dato = {data:alumnos}
+  //console.log(dato)
+  //res.status(200).json(dato)
+  
+  res.status(200).json(alumnos)
 })//end
 
 router.post('/getObs2',IsAuthenticated,async (req,res) => {
@@ -682,6 +741,48 @@ router.post('/getObs2',IsAuthenticated,async (req,res) => {
   res.status(200).json(data)
 })//end
 
+router.get('/cargarnotas', IsAuthenticated ,async function (req, res) {
+
+  res.status(200).render('../views/cargar_notas',{user: req.user.show_name, sexo:req.user.sexo,tipo:req.user.tipo})
+})//end get
+
+router.post('/getNota',IsAuthenticated,async (req,res) => {
+  let id_Document = req.body.id
+  
+  let doc = await Alumnos_Conceptos.where({_id: ObjectId(id_Document)})
+  
+  if(doc.length === 0){
+    res.status(400).end()
+    return false
+  }else{
+    res.status(200).json(doc[0].nota)
+  }
+  
+})//end
+
+router.post('/addNota',IsAuthenticated,async (req,res) => {
+  let id_Document = req.body.id
+  //let materia = req.body.materia
+  let nota = req.body.nota
+  
+  //let alumno = await Alumnos_Conceptos.where({id_alumno: ObjectId(id_alumno), materia: materia})
+  let doc = await Alumnos_Conceptos.findOne({_id: ObjectId(id_Document)})
+  if(doc.length === 0){
+    res.status(401).end()
+    return false
+  }else{
+    //await Alumnos_Conceptos.updateOne({id_alumno: id_alumno, materia: materia},
+    //{$set: {nota:nota}})
+    doc.nota = nota
+    await doc.save()
+    res.status(200).end()
+  }
+  
+})//end
+
+
+
+
 
 //Pdf
 router.post('/descarga', IsAuthenticated ,async function(req, res){
@@ -697,7 +798,7 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
   //Obtengo los conceptos del alumno
   let conceptos_guardados = await Alumnos_Conceptos.where({id_alumno:ObjectId(id_alumno)})
   //Obtengo la observacion
-  let obs = await Observaciones.where({id_alumno:ObjectId(id_alumno), cuatrimestre:cuatrimestre})
+  let obs = await Observaciones.where({id_alumno:ObjectId(id_alumno)})
   //Formo el nombre del alumno para enviar
   let nombreAlumno = conceptos_guardados[0].last_name + ' ' +  conceptos_guardados[0].name
   //Extraigo el dni para enviar
@@ -730,16 +831,16 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 router.get('/cargarUsuario', async  (req, res) => {
   let user = await new User()
-  user.username = 'maria'
-  user.password = bcrypt.hashSync('fox21', 10)
-  user.show_name = 'Maria'
+  user.username = 'heidy'
+  user.password = bcrypt.hashSync('hei21', 10)
+  user.show_name = 'Heidy'
   user.sexo = 'f'
-  user.tipo = 'precep'
+  user.tipo = 'psico'
   user.active = true;
   user.cursos.push(
-  {curso:'2A', materia:''},
+/*{curso:'2A', materia:''},
   {curso:'2B', materia:''},
-  /*{curso:'3CN', materia:'Ed. Física'},
+  {curso:'3CN', materia:'Ed. Física'},
   {curso:'3H', materia:'Ed. Física'},
   {curso:'1A', materia:'Ed. Física'},
   {curso:'1B', materia:'Ed. Física'},
@@ -767,13 +868,22 @@ router.get('/editarclave', async  (req, res) => {
 
 router.get('/dni', async  (req, res) => {
   //let todos = await Alumnos.where({curso:'1A', active:true})
-  await Alumnos.updateMany({active:true},{$set: {dni:'' }})
-
-
+  //await Alumnos.updateMany({active:true},{$set: {dni:'' }})
+  //await Alumnos_Conceptos.updateMany({nota:null},{$set: {nota:''}})
+  // re = await Alumnos_Conceptos.where({nota:null})
+  //console.log(re.length)
   res.send('okk')
 })
 
-
+router.get('/CorrejirNombre', async  (req, res) => {
+  //let todos = await Alumnos.where({curso:'1A', active:true})
+  //await Alumnos.updateMany({active:true},{$set: {dni:'' }})
+  //await Alumnos_Conceptos.updateMany({materia:'Lengua de Señas'},
+  //{$set: {materia:'Lengua de Señas Argentina' }})
+  //let result = await Alumnos_Conceptos.where({materia:'Inglés'})
+  //console.log(result.length)
+  res.send('ok...')
+})
 
 
 
@@ -877,6 +987,18 @@ function ExtraerMateriasSegunCurso(array_materias, curso){
   array_materias.forEach(e => {
     if(e.cursos.includes(curso)){
       arr.push(e.materia)
+      //arr.push(e._id)
+    }
+  })//end
+  return arr
+}//end
+
+function ExtraerMateriasSegunCurso2(array_materias, curso){
+  let arr = []
+  array_materias.forEach(e => {
+    if(e.cursos.includes(curso)){
+      arr.push({materia:e.materia, id_materia:e._id})
+     
     }
   })//end
   return arr
@@ -885,6 +1007,22 @@ function ExtraerMateriasSegunCurso(array_materias, curso){
 function UbicarEnY(total,porcentaje){
   return Math.round((porcentaje * total)/100)
 }//end
+
+function CorrejirNombreMateria(val){
+  if(materia == 'Lengua y Literatura' || materia == 'Lengua'){
+    return 'Lengua y Literatura'
+  }
+  if(materia == 'Lenguas Extranjeras' || materia == 'Inglés'){
+    return 'Lenguas Extranjeras'
+  }
+  if(materia == 'Educación Artística (Plástica)' || materia == 'Plástica'){
+    return 'Educación Artística (Plástica)'
+  }
+  if(materia == 'Lengua y Literatura' || materia == 'Lengua'){
+    return 'Lengua y Literatura'
+  }
+}
+
 
 //Exporto las rutas
 module.exports = router;

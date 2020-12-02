@@ -11,6 +11,7 @@ const alumnos_conceptos_schema = Schema({
     id_materia:        {type:Object,   requerid:true},
     user:              {type:Object,   requerid:true},
     cuatrimestre:      {type:String,   requerid:true},
+    nota:      {type:String,   requerid:true},
     conceptos:         [{}],
  
 })

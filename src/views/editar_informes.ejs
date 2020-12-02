@@ -200,8 +200,9 @@ window.onload = ()=>{
     url:'/cursosAsignados',
     //data:{}
     }).done(async function(res){
+          
           $.each(res,function(key,val){
-            $('#btn-container').append(`<button id_materia='${val.id_materia}' materia='${val.materia}' id='${val.curso}' class='btn btn-primary mb-1'>${val.curso + ' '+ val.materia}</button>`)
+            $('#btn-container').append(`<button id_materia='${val.id_materia}' materia='${val.materia}' id='${val.curso}' class='btn1 btn btn-primary mb-1'>${val.curso + ' '+ val.materia}</button>`)
           })//end each
     }).fail(async function(err){
       toastr.error('La Operacion NO Pudo Resolverse...', 'ERROR', { timeOut: 3000 })
@@ -228,10 +229,11 @@ $('#example').DataTable({
 })//end tabla
 
 //Click botones
-$('body').on( 'click', '.btn', function () {
+$('body').on( 'click', '.btn1', function () {
   id_curso = this.getAttribute("id")
   materia = this.getAttribute("materia")
   id_materia = this.getAttribute('id_materia')
+  
   limpiar()
   Obj.cargarSelectConAjax('POST','/alumnos',{curso:id_curso,materia},'#idSelectAlum')
 })
