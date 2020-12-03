@@ -421,6 +421,7 @@ router.post('/consultar', IsAuthenticated ,async function(req,res){
 })//end
 
 
+
 //Psicopedagoga
 router.get('/psicopedagoga', IsAuthenticated ,async function (req, res) {
 
