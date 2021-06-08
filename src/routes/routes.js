@@ -33,6 +33,10 @@ const { forEach, each } = require("lodash");
 //Creo el obj router
 const router = express.Router();
 
+function getRandom() {
+  return Math.floor(Math.random() * 999999)
+}
+
 const data_ = [
   {
     id: getRandom(),
@@ -1236,9 +1240,7 @@ function CorrejirNombreMateria(val){
   }
 }
 
-function getRandom() {
-  return Math.floor(Math.random() * 999999)
-}
+
 
  function last (array, limit) {
 
