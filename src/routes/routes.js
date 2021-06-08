@@ -811,7 +811,7 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 
 router.get('/api', async  (req, res) => {
-  res.json({id:1})
+  res.json(data)
 })
 
 
