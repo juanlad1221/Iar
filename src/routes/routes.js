@@ -824,20 +824,7 @@ router.get('/api', async  (req, res) => {
 
 
 
-const last = (array,limit) => {
 
-    if(limit === 'max'){
-      return array
-    }
-    if(limit === 'equal'){
-      let index = array.length - 20
-      return array.slice(index, array.length)
-    }
-    if(limit === 'less'){
-      let index = array.length - 15
-      return array.slice(index, array.length)
-    }
-  }
 
 
 
@@ -1045,6 +1032,21 @@ function CorrejirNombreMateria(val){
 function getRandom() {
   return Math.floor(Math.random() * 999999)
 }
+
+ function last (array, limit) {
+
+    if(limit === 'max'){
+      return array
+    }
+    if(limit === 'equal'){
+      let index = array.length - 20
+      return array.slice(index, array.length)
+    }
+    if(limit === 'less'){
+      let index = array.length - 15
+      return array.slice(index, array.length)
+    }
+  }
 
 const data_ = [
   {
