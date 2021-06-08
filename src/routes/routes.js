@@ -811,7 +811,7 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 
 router.get('/api', async  (req, res) => {
-  res.json(data)
+  res.json(data_)
 })
 
 
@@ -1026,11 +1026,11 @@ function CorrejirNombreMateria(val){
   }
 }
 
-unction getRandom() {
+function getRandom() {
   return Math.floor(Math.random() * 999999)
 }
 
-const data = [
+const data_ = [
   {
     id: getRandom(),
     paciente: "juan ponce",
