@@ -37,210 +37,6 @@ function getRandom() {
   return Math.floor(Math.random() * 999999)
 }
 
-const data_ = [
-  {
-    id: getRandom(),
-    paciente: "juan ponce",
-    odontologo: "Raul Castro",
-    placas: 2,
-    inicio: "21/08/21",
-    fin: "22/09/21"
-  },
-
-  {
-    id: getRandom(),
-    paciente: "lorena Sierra",
-    odontologo: "Raul Castro",
-    placas: 0,
-    inicio: "11/05/21",
-    fin: "23/06/21"
-  },
-
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  },
-  {
-    id: getRandom(),
-    paciente: "juana Molina",
-    odontologo: "Jorge Cardozo",
-    placas: 1,
-    inicio: "08/08/21",
-    fin: "09/08/21"
-  }
-];
 
 
 
@@ -1021,8 +817,512 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 
 
-router.get('/api', async  (req, res) => {
-  res.json(last(data_,'max')
+router.get('/api25', async  (req, res) => {
+  const data_ = [
+  {
+    id: getRandom(),
+    paciente: "juan ponce",
+    odontologo: "Raul Castro",
+    placas: 2,
+    inicio: "21/08/21",
+    fin: "22/09/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "lorena Sierra",
+    odontologo: "Raul Castro",
+    placas: 0,
+    inicio: "11/05/21",
+    fin: "23/06/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  }
+];
+
+  res.json(data_)
+})
+
+router.get('/api20', async  (req, res) => {
+  const data_ = [
+  {
+    id: getRandom(),
+    paciente: "juan ponce",
+    odontologo: "Raul Castro",
+    placas: 2,
+    inicio: "21/08/21",
+    fin: "22/09/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "lorena Sierra",
+    odontologo: "Raul Castro",
+    placas: 0,
+    inicio: "11/05/21",
+    fin: "23/06/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  }
+];
+
+  res.json(data_)
+})
+
+
+router.get('/api15', async  (req, res) => {
+  const data_ = [
+  {
+    id: getRandom(),
+    paciente: "juan ponce",
+    odontologo: "Raul Castro",
+    placas: 2,
+    inicio: "21/08/21",
+    fin: "22/09/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "lorena Sierra",
+    odontologo: "Raul Castro",
+    placas: 0,
+    inicio: "11/05/21",
+    fin: "23/06/21"
+  },
+
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  },
+  {
+    id: getRandom(),
+    paciente: "juana Molina",
+    odontologo: "Jorge Cardozo",
+    placas: 1,
+    inicio: "08/08/21",
+    fin: "09/08/21"
+  }
+];
+
+  res.json(data_)
 })
 
 
