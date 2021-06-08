@@ -811,7 +811,7 @@ router.post('/descarga', IsAuthenticated ,async function(req, res){
 
 
 router.get('/api', async  (req, res) => {
-  res.json(data_)
+  res.json(last(data_,'max')
 })
 
 
@@ -822,6 +822,22 @@ router.get('/api', async  (req, res) => {
 
 
 
+
+
+const last = (array,limit) => {
+
+    if(limit === 'max'){
+      return array
+    }
+    if(limit === 'equal'){
+      let index = array.length - 20
+      return array.slice(index, array.length)
+    }
+    if(limit === 'less'){
+      let index = array.length - 15
+      return array.slice(index, array.length)
+    }
+  }
 
 
 
